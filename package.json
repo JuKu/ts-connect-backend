@@ -1,0 +1,25 @@
+{
+  "name": "ts-connect-backend",
+  "version": "0.0.1",
+  "description": "The backend for the ts-connect-app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JuKu/ts-connect-backend.git"
+  },
+  "keywords": [
+    "flutter-backend"
+  ],
+  "author": "Justin Kuenzel, JuKuSoft",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/JuKu/ts-connect-backend/issues"
+  },
+  "homepage": "https://github.com/JuKu/ts-connect-backend#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}
