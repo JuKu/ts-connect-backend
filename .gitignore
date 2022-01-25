@@ -952,3 +952,6 @@ FodyWeavers.xsd
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/node,intellij+all,netbeans,eclipse,visualstudio,visualstudiocode,android,androidstudio,windows,linux,macos,gradle
+
+#custom
+.vscode
