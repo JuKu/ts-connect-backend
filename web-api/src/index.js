@@ -1,3 +1,5 @@
+import express from 'express';
+
 /**
  * this is the main file for the web-api application.
  * 
@@ -8,8 +10,17 @@
 
 //get the server host and port
 const HOST = process.env.HOST || '127.0.0.1';
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
 
-const express = require('express');
+//create a new express application
 const app = express();
-const port = 3000;
+
+// define a route handler for the default home page
+app.get( "/", ( req, res ) => {
+    res.send( "Hello world!" );
+} );
+
+// start the Express server
+app.listen( PORT, () => {
+    console.log( `server started at http://${ HOST }:${ PORT }` );
+} );

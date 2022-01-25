@@ -2,8 +2,11 @@
   "name": "ts-connect-backend",
   "version": "0.0.1",
   "description": "The backend for the ts-connect-app",
-  "main": "index.js",
+  "type": "module",
+  "main": "web-api/src/index.js",
   "scripts": {
+    "start": "node .",
+    "start-notification-service": "node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
