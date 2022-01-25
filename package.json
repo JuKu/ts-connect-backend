@@ -24,5 +24,8 @@
   "homepage": "https://github.com/JuKu/ts-connect-backend#readme",
   "dependencies": {
     "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "typescript": "^4.5.5"
   }
 }
