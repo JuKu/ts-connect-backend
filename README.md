@@ -20,4 +20,7 @@ After that you get a output like this:\
 ## Admin Console of eJabberd
 
 The admin console is hosted automatically on your server:\
-`https://10.0.1.20:5280/admin/`
+`https://10.0.1.20:5280/admin/`\
+\
+**Important**! The server uses a self-signed certificate by default!\
+Also the **username** is not only your created username, instead you have to add your configured ejabberd hostname: `admin-user@hostname`, e.q. `jabber-admin@rpi.home`.
