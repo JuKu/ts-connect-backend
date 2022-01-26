@@ -35,4 +35,10 @@ You can also generate your own self-signed certificate (recommended), see also: 
 
 ## Install MongoDB
 
-You can install your mongodb with `apt-get install mongodb-org`
+You can install your mongodb with `apt-get install mongodb-org`.\
+Alternatively you can also create a MongoDB instance in Cloud, with MongoDB Atlas. There is also a free tier with max. 512MB storage, which you can use for testing.
+
+# Start the server
+
+Run this command in shell:\
+`npm run start`
