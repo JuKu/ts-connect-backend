@@ -12,7 +12,10 @@ You can install it in nearly on every linux server, especially on Debian / Ubunt
 `sudo apt install ejabberd`\
 \
 After that you can configure the admin account of ejabberd:\
-`sudo dpkg-reconfigure ejabberd`
+`sudo dpkg-reconfigure ejabberd`\
+\
+After that you get a output like this:\
+`Admin user "jabber-admin@rpi.home"`
 
 ## Admin Console of eJabberd
 
