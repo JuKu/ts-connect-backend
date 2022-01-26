@@ -2,12 +2,14 @@
   "name": "ts-connect-backend",
   "version": "0.0.1",
   "description": "The backend for the ts-connect-app",
-  "type": "module",
+  "type1": "module",
   "main": "web-api/src/index.js",
   "scripts": {
-    "start": "tsc && node dist/web-api/app.js",
+    "prebuild": "node -p \"'export const LIB_VERSION = ' + JSON.stringify(require('./package.json').version) + ';'\" > src/version.ts",
+    "start": "tsc --rootDir ./src/ && node dist/web-api/app.js",
     "start-notification-service": "node .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint . --ext .ts --fix"
   },
   "repository": {
     "type": "git",
@@ -26,7 +28,12 @@
     "express": "^4.17.2"
   },
   "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^17.0.12",
+    "@typescript-eslint/eslint-plugin": "^5.10.1",
+    "@typescript-eslint/parser": "^5.10.1",
     "eslint": "^8.7.0",
+    "eslint-config-google": "^0.14.0",
     "typescript": "^4.5.5"
   }
 }

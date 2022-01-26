@@ -1,26 +1,41 @@
-import express from 'express';
+import express from "express";
+var fs = require('fs');
 
 /**
  * this is the main file for the web-api application.
- * 
+ *
  * @author Justin Kuenzel
- * 
+ *
  * @copyright 2022, Justin Kuenzel, JuKuSoft
  */
 
-//get the server host and port
-const HOST = process.env.HOST || '127.0.0.1';
+// get the server host and port
+const HOST = process.env.HOST || "127.0.0.1";
 const PORT = process.env.PORT || 3000;
 
-//create a new express application
+const SERVER_VERSION = JSON.parse(fs.readFileSync('../../package.json', 'utf8')).version;
+
+// create a new express application
 const app = express();
 
 // define a route handler for the default home page
 app.get( "/", ( req, res ) => {
-    res.send( "Hello world!" );
+  res.send( "This is the public API of the ts-connect-app." );
 } );
+
+// TODO: add api endpoints here
+app.get("/api/version", (req, res) => {
+  // get the current version from package.json
+  //import {version} from "../../package.json";
+  //const pjson = require("./package.json");
+
+  const version = {
+    "backend-version": SERVER_VERSION,//pjson.version,
+  };
+  res.json(version);
+});
 
 // start the Express server
 app.listen( PORT, () => {
-    console.log( `server started at http://${ HOST }:${ PORT }` );
+  console.log( `server started at http://${ HOST }:${ PORT }` );
 } );
