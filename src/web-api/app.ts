@@ -13,7 +13,10 @@ var fs = require('fs');
 const HOST = process.env.HOST || "127.0.0.1";
 const PORT = process.env.PORT || 3000;
 
-const SERVER_VERSION = JSON.parse(fs.readFileSync('../../package.json', 'utf8')).version;
+const ROOT_PATH = __dirname;
+console.info(`ROOT_PATH: ${ROOT_PATH}`);
+
+const SERVER_VERSION = JSON.parse(fs.readFileSync(ROOT_PATH + '/../../package.json', 'utf8')).version;
 
 // create a new express application
 const app = express();

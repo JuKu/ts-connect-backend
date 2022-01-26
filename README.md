@@ -5,6 +5,12 @@ The backend for the ts-connect-app
 
 # Installation
 
+The backend server has some requirements, e.q.:
+  - nodejs
+  - mongodb
+  - ejabberd
+  - (redis server)
+
 ## Install ejabberd
 
 `ejabberd` is the XMPP Server for the messaging in the app.
@@ -23,4 +29,10 @@ The admin console is hosted automatically on your server:\
 `https://10.0.1.20:5280/admin/`\
 \
 **Important**! The server uses a self-signed certificate by default!\
-Also the **username** is not only your created username, instead you have to add your configured ejabberd hostname: `admin-user@hostname`, e.q. `jabber-admin@rpi.home`.
+Also the **username** is not only your created username, instead you have to add your configured ejabberd hostname: `admin-user@hostname`, e.q. `jabber-admin@rpi.home`.\
+\
+You can also generate your own self-signed certificate (recommended), see also: https://meinnoteblog.wordpress.com/2013/11/30/ejabberd-xmpp-server-auf-raspberry-pi-installieren/
+
+## Install MongoDB
+
+You can install your mongodb with `apt-get install mongodb-org`
