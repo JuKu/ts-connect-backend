@@ -21,6 +21,11 @@ const SERVER_VERSION = JSON.parse(fs.readFileSync(ROOT_PATH + '/../../package.js
 // create a new express application
 const app = express();
 
+//register express nmiddleware
+app.use(express.static("public"));
+app.use(express.json);
+app.use(express.urlencoded);
+
 // define a route handler for the default home page
 app.get( "/", ( req, res ) => {
   res.send( "This is the public API of the ts-connect-app." );
