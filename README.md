@@ -58,6 +58,11 @@ sudo apt-get install build-essential -y
 
 See also: https://linuxize.com/post/how-to-install-node-js-on-raspberry-pi/
 
+## Install NodeJS dependencies
+
+Next, install the required NodeJS dependencies. Therefor go to the cloned source code directory (ts-connect-backend) and execute the following command:\
+`npm install`
+
 # Start the server
 
 Run this command in shell:\
