@@ -958,3 +958,4 @@ FodyWeavers.xsd
 dist
 config
 !config/*example*
+!*example*
