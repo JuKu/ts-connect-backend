@@ -38,6 +38,26 @@ You can also generate your own self-signed certificate (recommended), see also: 
 You can install your mongodb with `apt-get install mongodb-org`.\
 Alternatively you can also create a MongoDB instance in Cloud, with MongoDB Atlas. There is also a free tier with max. 512MB storage, which you can use for testing.
 
+## Install NodeJS
+
+NodeJS version >= 16.x.x is required.\
+To install it, do the following steps (Debian / Ubuntu):\
+```shell
+# Enable the NodeSource repository
+curl -sL https://deb.nodesource.com/setup_17.x | sudo bash -
+
+# Install NodeJS
+sudo apt-get install nodejs -y
+
+# Check, that your NodeJS version is >= 16.x.x
+node --version
+
+# Install build tools
+sudo apt-get install build-essential -y
+```
+
+See also: https://linuxize.com/post/how-to-install-node-js-on-raspberry-pi/
+
 # Start the server
 
 Run this command in shell:\

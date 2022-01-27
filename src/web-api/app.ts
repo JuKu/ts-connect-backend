@@ -1,4 +1,5 @@
 import express from "express";
+import {Logger} from "../shared/system/logger/logger";
 var fs = require('fs');
 
 /**
@@ -17,6 +18,9 @@ const ROOT_PATH = __dirname;
 console.info(`ROOT_PATH: ${ROOT_PATH}`);
 
 const SERVER_VERSION = JSON.parse(fs.readFileSync(ROOT_PATH + '/../../package.json', 'utf8')).version;
+
+//initialize the logger
+Logger.init();
 
 // create a new express application
 const app = express();
