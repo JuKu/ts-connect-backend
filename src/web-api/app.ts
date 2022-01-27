@@ -27,8 +27,8 @@ const app = express();
 
 //register express nmiddleware
 app.use(express.static("public"));
-app.use(express.json);
-app.use(express.urlencoded);
+//app.use(express.json);
+//app.use(express.urlencoded);
 
 // define a route handler for the default home page
 app.get( "/", ( req, res ) => {
