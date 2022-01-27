@@ -66,6 +66,12 @@ See also: https://linuxize.com/post/how-to-install-node-js-on-raspberry-pi/
 Next, install the required NodeJS dependencies. Therefor go to the cloned source code directory (ts-connect-backend) and execute the following command:\
 `npm install`
 
+## Create configuration files
+
+In `config` directory there are several example configuration files.
+Remove the `.example` from these files (e.q. mongodb.example.cfg --> mongodb.cfg) and replace the values in these configuration files.
+You have to do this for all configuration files.
+
 # Start the server
 
 Run this command in shell:\
