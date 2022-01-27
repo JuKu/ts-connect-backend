@@ -1,3 +1,23 @@
+import winston from 'winston';
+
+const levels = {
+  error: 0,
+  warn: 1,
+  info: 2,
+  http: 3,
+  debug: 4,
+}
+
+const colors = {
+  error: 'red',
+  warn: 'yellow',
+  info: 'green',
+  http: 'magenta',
+  debug: 'white',
+}
+
+winston.addColors(colors);
+
 export class Logger {
 
     //TODO: fix type
@@ -21,7 +41,13 @@ export class Logger {
               }),
               format.json()
             ),
-            transports: [new transports.Console()]
+            transports: [
+              new transports.Console(),
+              new transports.File({
+                filename: 'logs/error.log',
+                level: 'warn',
+              })
+            ]
           });
     }
 
