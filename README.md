@@ -54,6 +54,9 @@ node --version
 
 # Install build tools
 sudo apt-get install build-essential -y
+
+# Optional: For Hot-Reload install also:
+npm install -g ts-node
 ```
 
 See also: https://linuxize.com/post/how-to-install-node-js-on-raspberry-pi/
