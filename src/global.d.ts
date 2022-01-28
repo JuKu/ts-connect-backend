@@ -1,11 +1,14 @@
 import winston from "winston";
 import { Express } from "express-serve-static-core";
+import { Mongoose } from "mongoose";
 
 declare global {
     // eslint-disable-next-line no-var
     var logger: winston.Logger;
     // eslint-disable-next-line no-var
-  var app: Express;
+    var app: Express;
+    // eslint-disable-next-line no-var
+    var mongoose: Mongoose;
 }
 
 export { };

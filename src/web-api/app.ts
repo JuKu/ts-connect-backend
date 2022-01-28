@@ -31,12 +31,15 @@ const SERVER_VERSION = JSON.parse(fs.readFileSync(
 const {createLogger, loggers, format, transports} = require("winston");
 import winston, {exitOnError} from "winston";
 import { Express } from "express-serve-static-core";
+import { Mongoose } from "mongoose";
 
 declare global {
   // eslint-disable-next-line no-var
   var logger: winston.Logger;
   // eslint-disable-next-line no-var
   var app: Express;
+  // eslint-disable-next-line no-var
+  var mongoose: Mongoose;
 }
 
 global.logger = winston.createLogger({
@@ -64,7 +67,16 @@ global.logger = winston.createLogger({
 
 logger.info(`ROOT_PATH: ${ROOT_PATH}`, {"root-path": ROOT_PATH, "type": "startup"});
 
+//connect to MongoDB database
+logger.info("connect to MongoDB...", {"type": "startup"});
+global.mongoose = require("../shared/system/database/mongodb-client").connect();
+
+//register schemas (not models!)
+require("../shared/system/model/import-models");
+
 logger.info("initialize express...", {"type": "startup"});
+
+//TODO: create admin user, if not exists or call startup handlers
 
 // create a new express application
 global.app = express();
