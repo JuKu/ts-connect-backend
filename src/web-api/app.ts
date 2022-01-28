@@ -62,9 +62,9 @@ global.logger = winston.createLogger({
   exitOnError: false,
 });
 
-logger.info(`ROOT_PATH: ${ROOT_PATH}`, {"root-path": ROOT_PATH});
+logger.info(`ROOT_PATH: ${ROOT_PATH}`, {"root-path": ROOT_PATH, "type": "startup"});
 
-logger.info("initialize express...");
+logger.info("initialize express...", {"type": "startup"});
 
 // create a new express application
 global.app = express();
@@ -99,5 +99,5 @@ require("./handlers/login")();
 // start the Express server
 app.listen( PORT, () => {
   // console.log( `server started at http://${ HOST }:${ PORT }` );
-  logger.info( `server started at http://${ HOST }:${ PORT }` );
+  logger.info( `server started at http://${ HOST }:${ PORT }`, {"type": "startup"} );
 } );

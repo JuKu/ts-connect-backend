@@ -5,7 +5,7 @@ const crypto = require('crypto');
 const { check } = require('express-validator');
 
 module.exports = () => {
-    logger.info("register endpoint /api/login");
+    logger.info("register endpoint /api/login", {"type": "register-endpoint"});
     
 app.post("/api/login", [
     check('username').isLength({ min: 3 }).trim().escape(),
@@ -31,7 +31,7 @@ app.post("/api/login", [
     //let username = sanitizer.value(req.body.username, 'String');
     //let password = sanitizer.value(req.body.password, 'String');
 
-    logger.info(req.body.username + " attempted login");
+    logger.info(req.body.username + " attempted login", {"type": "request"});
     let passwordHash = crypto.createHash('sha256').update(req.body.password).digest('hex');
     /*db.get("SELECT * FROM users WHERE (username, password) = (?, ?)", [req.body.username, password], function(err, row) {
       if(row != undefined ) {
