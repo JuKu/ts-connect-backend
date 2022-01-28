@@ -18,7 +18,7 @@ const HOST = process.env.HOST || "127.0.0.1";
 const PORT = process.env.PORT || 3000;
 
 const ROOT_PATH = __dirname;
-console.info(`ROOT_PATH: ${ROOT_PATH}`);
+//console.info(`ROOT_PATH: ${ROOT_PATH}`);
 
 const SERVER_VERSION = JSON.parse(fs.readFileSync(
     ROOT_PATH + "/../../package.json", "utf8"),
@@ -27,13 +27,16 @@ const SERVER_VERSION = JSON.parse(fs.readFileSync(
 // require("../shared/system/logger/logger");
 
 // initialize logger
-console.info("initialize winston logger...");
+//console.info("initialize winston logger...");
 const {createLogger, loggers, format, transports} = require("winston");
 import winston, {exitOnError} from "winston";
+import { Express } from "express-serve-static-core";
 
 declare global {
   // eslint-disable-next-line no-var
   var logger: winston.Logger;
+  // eslint-disable-next-line no-var
+  var app: Express;
 }
 
 global.logger = winston.createLogger({
@@ -59,10 +62,12 @@ global.logger = winston.createLogger({
   exitOnError: false,
 });
 
+logger.info(`ROOT_PATH: ${ROOT_PATH}`, {"root-path": ROOT_PATH});
+
 logger.info("initialize express...");
 
 // create a new express application
-const app = express();
+global.app = express();
 
 // register express nmiddleware
 app.use(express.static("public"));
@@ -77,7 +82,7 @@ app.get( "/", ( req: Request, res: Response ) => {
 } );
 
 // TODO: add api endpoints here
-app.get("/api/version", (req, res) => {
+app.get("/api/version",  (req, res) => {
   // get the current version from package.json
   // import {version} from "../../package.json";
   // const pjson = require("./package.json");
@@ -87,6 +92,9 @@ app.get("/api/version", (req, res) => {
   };
   res.json(version);
 });
+
+//register handlers
+require("./handlers/login")();
 
 // start the Express server
 app.listen( PORT, () => {
