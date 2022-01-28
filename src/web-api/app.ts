@@ -1,10 +1,9 @@
 "use strict";
 
 import express from "express";
-import {Logger} from "../shared/system/logger/logger";
 import fs from "fs";
-import { HttpApiServer } from "../shared/system/server/apiserver";
-import { Request, Response } from "express";
+import {HttpApiServer} from "../shared/system/server/apiserver";
+import {Request, Response} from "express";
 
 /**
  * this is the main file for the web-api application.
@@ -25,8 +24,42 @@ const SERVER_VERSION = JSON.parse(fs.readFileSync(
     ROOT_PATH + "/../../package.json", "utf8"),
 ).version;
 
-// initialize the logger
-Logger.init();
+// require("../shared/system/logger/logger");
+
+// initialize logger
+console.info("initialize winston logger...");
+const {createLogger, loggers, format, transports} = require("winston");
+import winston, {exitOnError} from "winston";
+
+declare global {
+  // eslint-disable-next-line no-var
+  var logger: winston.Logger;
+}
+
+global.logger = winston.createLogger({
+  level: "info",
+  levels: winston.config.npm.levels,
+  format: format.combine(
+      winston.format.timestamp({
+      // format: "YYYY-MM-DD'T'HH:mm:ss.SSSZ",
+      }),
+      format.errors({stack: true}),
+      winston.format.json(),
+  ),
+  defaultMeta: {service: "web-api"},
+  transports: [
+    new transports.Console(),
+    new transports.File({
+      filename: "logs/error.log",
+      level: "warn",
+    }),
+    new transports.File({filename: "logs/all.log"}),
+    // new winston.transports.Console({ format: winston.format.simple() })
+  ],
+  exitOnError: false,
+});
+
+logger.info("initialize express...");
 
 // create a new express application
 const app = express();
@@ -34,12 +67,12 @@ const app = express();
 // register express nmiddleware
 app.use(express.static("public"));
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({extended: true}));
 
-const apiServer: HttpApiServer = new HttpApiServer(app);
+// const apiServer: HttpApiServer = new HttpApiServer(app);
 
 // define a route handler for the default home page
-apiServer.get( "/", ( req: Request, res: Response ) => {
+app.get( "/", ( req: Request, res: Response ) => {
   res.send( "This is the public API of the ts-connect-app." );
 } );
 
@@ -57,5 +90,6 @@ app.get("/api/version", (req, res) => {
 
 // start the Express server
 app.listen( PORT, () => {
-  Logger.info( `server started at http://${ HOST }:${ PORT }` );
+  // console.log( `server started at http://${ HOST }:${ PORT }` );
+  logger.info( `server started at http://${ HOST }:${ PORT }` );
 } );
