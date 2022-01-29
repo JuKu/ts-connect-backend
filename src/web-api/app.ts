@@ -1,9 +1,10 @@
 "use strict";
 
-import express from "express";
+import express, {Request, Response} from "express";
 import fs from "fs";
-import {HttpApiServer} from "../shared/system/server/apiserver";
-import {Request, Response} from "express";
+import winston from "winston";
+import {Express} from "express-serve-static-core";
+// import {Mongoose} from "mongoose";
 
 /**
  * this is the main file for the web-api application.
@@ -18,7 +19,7 @@ const HOST = process.env.HOST || "127.0.0.1";
 const PORT = process.env.PORT || 3000;
 
 const ROOT_PATH = __dirname;
-//console.info(`ROOT_PATH: ${ROOT_PATH}`);
+// console.info(`ROOT_PATH: ${ROOT_PATH}`);
 
 const SERVER_VERSION = JSON.parse(fs.readFileSync(
     ROOT_PATH + "/../../package.json", "utf8"),
@@ -27,11 +28,8 @@ const SERVER_VERSION = JSON.parse(fs.readFileSync(
 // require("../shared/system/logger/logger");
 
 // initialize logger
-//console.info("initialize winston logger...");
+// console.info("initialize winston logger...");
 const {createLogger, loggers, format, transports} = require("winston");
-import winston, {exitOnError} from "winston";
-import { Express } from "express-serve-static-core";
-import { Mongoose } from "mongoose";
 
 declare global {
   // eslint-disable-next-line no-var
@@ -39,7 +37,7 @@ declare global {
   // eslint-disable-next-line no-var
   var app: Express;
   // eslint-disable-next-line no-var
-  var mongoose: Mongoose;
+  //var mongoose: Mongoose;
 }
 
 global.logger = winston.createLogger({
@@ -65,18 +63,22 @@ global.logger = winston.createLogger({
   exitOnError: false,
 });
 
-logger.info(`ROOT_PATH: ${ROOT_PATH}`, {"root-path": ROOT_PATH, "type": "startup"});
+logger.info(`ROOT_PATH: ${ROOT_PATH}`, {
+  "root-path": ROOT_PATH,
+  "type": "startup",
+});
 
-//connect to MongoDB database
+// connect to MongoDB database
 logger.info("connect to MongoDB...", {"type": "startup"});
-global.mongoose = require("../shared/system/database/mongodb-client").connect();
+// eslint-disable-next-line max-len
+// global.mongoose = require("../shared/system/database/mongodb-client").connect();
 
-//register schemas (not models!)
+// register schemas (not models!)
 require("../shared/system/model/import-models");
 
 logger.info("initialize express...", {"type": "startup"});
 
-//TODO: create admin user, if not exists or call startup handlers
+// TODO: create admin user, if not exists or call startup handlers
 
 // create a new express application
 global.app = express();
@@ -89,12 +91,12 @@ app.use(express.urlencoded({extended: true}));
 // const apiServer: HttpApiServer = new HttpApiServer(app);
 
 // define a route handler for the default home page
-app.get( "/", ( req: Request, res: Response ) => {
-  res.send( "This is the public API of the ts-connect-app." );
-} );
+app.get("/", (req: Request, res: Response) => {
+  res.send("This is the public API of the ts-connect-app.");
+});
 
 // TODO: add api endpoints here
-app.get("/api/version",  (req, res) => {
+app.get("/api/version", (req, res) => {
   // get the current version from package.json
   // import {version} from "../../package.json";
   // const pjson = require("./package.json");
@@ -105,11 +107,11 @@ app.get("/api/version",  (req, res) => {
   res.json(version);
 });
 
-//register handlers
+// register handlers
 require("./handlers/login")();
 
 // start the Express server
-app.listen( PORT, () => {
+app.listen(PORT, () => {
   // console.log( `server started at http://${ HOST }:${ PORT }` );
-  logger.info( `server started at http://${ HOST }:${ PORT }`, {"type": "startup"} );
-} );
+  logger.info(`server started at http://${HOST}:${PORT}`, {"type": "startup"});
+});
