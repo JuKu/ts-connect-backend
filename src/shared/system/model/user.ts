@@ -9,13 +9,17 @@ interface IUser extends Document {
 }
 
 const UserSchema: Schema = new Schema({
-  username: {type: String, required: true, unique: true},
+  // eslint-disable-next-line max-len
+  username: {type: String, required: true, unique: true, index: true},
   password: {type: String, required: true},
-  email: {type: String, required: true},
+  email: {type: String, required: true, index: true},
   firstName: {type: String, required: true},
   lastName: {type: String, required: true},
 });
 
 const User: Model<IUser> = model("User", UserSchema);
+User.ensureIndexes().then(() => {
+  logger.debug("ensure indexes for model 'User'", {"type": "database"});
+});
 
 module.exports = UserSchema;

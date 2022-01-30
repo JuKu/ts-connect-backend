@@ -58,29 +58,9 @@ class MongoDBClient {
     logger.info("connect to MongoDB: " + hostname, {"type": "startup"});
 
     try {
-      await mongoose.connect(uri);
-    } catch (error) {
-      // eslint-disable-next-line max-len
-      logger.error("Catched error: ", {"type": "error", "message": error.message, "stack": error.stack}, error);
-      process.exit(1);
-    }
-
-    /**
-     * connect to database.
-     */
-    async function run(): Promise<void> {
-      //logger.info("connect to MongoDB: " + hostname, {"type": "startup"});
-
-      // 4. Connect to MongoDB
-      await setTimeout(function() {
-        //this.mongoose.connect(uri);
-        // mongoose.connect('mongodb://localhost:27017/myapp');
-      }, 10000);
-    }
-
-    // open connection
-    try {
-      await run();
+      await mongoose.connect(uri, {
+        autoIndex: false,
+      });
     } catch (error) {
       // eslint-disable-next-line max-len
       logger.error("Catched error: ", {"type": "error", "message": error.message, "stack": error.stack}, error);
@@ -88,6 +68,7 @@ class MongoDBClient {
     }
 
     logger.info("connected to MongoDB database", {"type": "startup"});
+    logger.info("Mongoose version: " + mongoose.version, {"type": "startup"});
 
     return this.mongoose;
   }
