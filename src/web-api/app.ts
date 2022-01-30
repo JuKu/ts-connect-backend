@@ -7,6 +7,7 @@ import {Express} from "express-serve-static-core";
 import {Mongoose} from "mongoose";
 import User, {IUser} from "../shared/system/model/user";
 import {randomUUID} from "crypto";
+import {hasRole} from "../shared/system/middleware/check-role";
 const bcrypt = require("bcryptjs");
 
 /**
@@ -43,6 +44,8 @@ declare global {
   var mongoose: Mongoose;
   // eslint-disable-next-line no-var
   var ROOT_PATH: String;
+  // eslint-disable-next-line no-var
+  var authCheck: (req: Request, res: Response, next: () => any) => any;
 }
 
 global.logger = winston.createLogger({
@@ -99,6 +102,10 @@ require("../shared/system/model/import-models");
         preName: "Admin",
         lastName: "Admin",
         tokenSecret: randomUUID(),
+        country: "germany",
+        gender: 1,
+        globalRoles: ["super-admin", "developer"],
+        globalPermissions: ["super-admin"]
       });
       doc.save().then(() => {
         logger.info("created user 'admin' with password 'admin' successfully");
@@ -122,6 +129,9 @@ app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
+const auth = require(ROOT_PATH + "/../shared/system/middleware/auth");
+global.authCheck = auth;
+
 // const apiServer: HttpApiServer = new HttpApiServer(app);
 
 // define a route handler for the default home page
@@ -139,6 +149,14 @@ app.get("/api/version", (req, res) => {
     "backend-version": SERVER_VERSION, // pjson.version,
   };
   res.json(version);
+});
+
+// authCheck middleware forces authentication of user
+app.get("/api/secured-endpoint", authCheck, hasRole("super-admin"), (req: Request, res: Response) => {
+  return res.status(200)
+      .json({
+        "success": true,
+      });
 });
 
 // register handlers

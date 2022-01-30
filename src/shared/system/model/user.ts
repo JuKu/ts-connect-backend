@@ -8,6 +8,10 @@ export interface IUser extends Document {
   preName: string;
   lastName: string;
   tokenSecret: string;
+  country: string;
+  gender: number;
+  globalRoles: Array<string>;
+  globalPermissions: Array<string>;
 }
 
 export const UserSchema: Schema = new Schema({
@@ -21,6 +25,20 @@ export const UserSchema: Schema = new Schema({
   // this is an additional secret for JWT tokens,
   // so the token can be invalidated
   tokenSecret: {type: String, required: true},
+  country: {type: String, required: true},
+  // 0 - male, 1 - female, 2 - diverse
+  gender: {
+    type: Number,
+    enum: [0, 2],
+    default: 0,
+    required: true,
+  },
+  globalRoles: [{
+    type: String,
+  }],
+  globalPermissions: [{
+    type: String,
+  }],
 });
 
 const User: Model<IUser> = model("User", UserSchema);
