@@ -77,6 +77,9 @@ module.exports = async () => {
               .json({
                 "success": true,
                 "token": token,
+                "userid": user._id,
+                "username": user.username,
+                "mail": user.email,
               });
           return;
         } else {
@@ -94,10 +97,6 @@ module.exports = async () => {
               errorMessage: "User not found",
             });
       }
-
-      res.send("OK");
-
-      // TODO: add code here
     } catch (err) {
       const errorUUID = uuidv4();
 
