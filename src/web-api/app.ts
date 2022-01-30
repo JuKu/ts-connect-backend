@@ -4,7 +4,7 @@ import express, {Request, Response} from "express";
 import fs from "fs";
 import winston from "winston";
 import {Express} from "express-serve-static-core";
-// import {Mongoose} from "mongoose";
+import {Mongoose} from "mongoose";
 
 /**
  * this is the main file for the web-api application.
@@ -37,7 +37,7 @@ declare global {
   // eslint-disable-next-line no-var
   var app: Express;
   // eslint-disable-next-line no-var
-  //var mongoose: Mongoose;
+  var mongoose: Mongoose;
 }
 
 global.logger = winston.createLogger({
