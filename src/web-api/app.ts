@@ -6,6 +6,7 @@ import winston from "winston";
 import {Express} from "express-serve-static-core";
 import {Mongoose} from "mongoose";
 import User, {IUser} from "../shared/system/model/user";
+import {randomUUID} from "crypto";
 const bcrypt = require("bcryptjs");
 
 /**
@@ -83,13 +84,17 @@ global.mongoose = require("../shared/system/database/mongodb-client").connect();
 require("../shared/system/model/import-models");
 
 // TODO: extract this code into other class
-// create user admin, if not exists
+// create user admin, if no other user exists
 (async () => {
   try {
-    if (!await User.exists({username: "admin"})) {
+    if (await User.count() == 0) {
+      // generate random salt
+      const salt = await bcrypt.hash(randomUUID(), 10);
+
       const doc = new User({
         username: "admin",
-        password: await bcrypt.hash("admin", 10),
+        password: await bcrypt.hash("admin" + salt, 10),
+        salt: salt,
         email: "admin@example.com",
         preName: "Admin",
         lastName: "Admin",
