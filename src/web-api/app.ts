@@ -8,6 +8,7 @@ import {Mongoose} from "mongoose";
 import User, {IUser} from "../shared/system/model/user";
 import {randomUUID} from "crypto";
 import {hasRole} from "../shared/system/middleware/check-role";
+import {hasPermission} from "../shared/system/middleware/check-permission";
 const bcrypt = require("bcryptjs");
 
 /**
@@ -103,9 +104,9 @@ require("../shared/system/model/import-models");
         lastName: "Admin",
         tokenSecret: randomUUID(),
         country: "germany",
-        gender: 1,
+        gender: 0,
         globalRoles: ["super-admin", "developer"],
-        globalPermissions: ["super-admin"]
+        globalPermissions: ["super-admin"],
       });
       doc.save().then(() => {
         logger.info("created user 'admin' with password 'admin' successfully");
@@ -152,7 +153,7 @@ app.get("/api/version", (req, res) => {
 });
 
 // authCheck middleware forces authentication of user
-app.get("/api/secured-endpoint", authCheck, hasRole("super-admin"), (req: Request, res: Response) => {
+app.get("/api/secured-endpoint", authCheck, hasRole("super-admin"), hasPermission("super-admin"), (req: Request, res: Response) => {
   return res.status(200)
       .json({
         "success": true,

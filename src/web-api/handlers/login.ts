@@ -67,7 +67,7 @@ module.exports = async () => {
 
           // Create token
           const token = jwt.sign(
-              {user_id: user._id, username: user.username, mail: user.email,
+              {userid: user._id, username: user.username, mail: user.email,
                 globalRoles: user.globalRoles},
               jwtSecretKey/* + user.tokenSecret*/,
               {

@@ -6,17 +6,6 @@
  * @author Justin Kuenzel
  */
 import {Request, Response} from "express";
-import {IniConfig} from "../config/iniconfig";
-const jwt = require("jsonwebtoken");
-
-const jwtSecretKey: String = IniConfig.parseFile(
-    __dirname + "/../../../../config/apiserver.cfg",
-).jwtSecretKey;
-
-if (jwtSecretKey === undefined || jwtSecretKey.length == 0) {
-  logger.error("jwt secret key not found");
-  process.exit(1);
-}
 
 export const hasRole = function(requiredRole: String) {
   return (req: Request, res: Response, next: () => any) => {
@@ -48,8 +37,10 @@ export const hasRole = function(requiredRole: String) {
             });
       }
     } catch (err) {
-      logger.info("invalid token", {"type": "authorization",
-        "client-hostname": req.hostname});
+      logger.info("Error occurred while check for role",
+          {"type": "authorization",
+            "client-hostname": req.hostname,
+            "error": err});
       return res.status(401)
           .json({
             errorCode: 401,

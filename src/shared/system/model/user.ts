@@ -29,15 +29,17 @@ export const UserSchema: Schema = new Schema({
   // 0 - male, 1 - female, 2 - diverse
   gender: {
     type: Number,
-    enum: [0, 2],
+    enum: [0, 1, 2],
     default: 0,
     required: true,
   },
   globalRoles: [{
     type: String,
+    required: true,
   }],
   globalPermissions: [{
     type: String,
+    required: true,
   }],
 });
 

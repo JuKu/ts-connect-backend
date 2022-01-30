@@ -33,7 +33,7 @@ const verifyToken = (req: Request, res: Response, next: () => any) => {
 
   try {
     const decoded = jwt.verify(token, jwtSecretKey);
-    console.log(decoded);
+    // console.log(decoded);
     // @ts-ignore
     req.user = decoded;
   } catch (err) {
