@@ -46,7 +46,8 @@ module.exports = async () => {
     }
 
     try {
-      logger.info(req.body.username + " attempted login", {"type": "request"});
+      logger.info(req.body.username + " attempted login",
+          {"type": "request", "username": req.body.username});
 
       // Validate if user exist in our database
       const user = await User.findOne({username: req.body.username});
@@ -62,7 +63,7 @@ module.exports = async () => {
         if (await bcrypt.compare(req.body.password + salt, user.password)) {
           // password is correct
           logger.info("password correct for user '" + user.username + "'",
-              {"type": "login"});
+              {"type": "login", "username": req.body.username});
 
           // Create token
           const token = jwt.sign(
@@ -84,6 +85,10 @@ module.exports = async () => {
           return;
         } else {
           // password is wrong
+          logger.info("login failed for user '" + user.username + "'," +
+            " because password is not correct",
+          {"type": "login", "username": req.body.username});
+
           res.status(403);
           res.json({
             errorCode: 401,
@@ -91,6 +96,10 @@ module.exports = async () => {
           });
         }
       } else {
+        logger.info("login failed for user '" + user.username + "'," +
+          " because user does not exists",
+        {"type": "login", "username": req.body.username});
+
         res.status(404)
             .json({
               errorCode: 404,
