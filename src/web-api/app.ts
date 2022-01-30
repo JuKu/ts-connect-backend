@@ -83,10 +83,10 @@ global.mongoose = require("../shared/system/database/mongodb-client").connect();
 require("../shared/system/model/import-models");
 
 // TODO: extract this code into other class
-// create user admin, if not exists
+// create user admin, if no other user exists
 (async () => {
   try {
-    if (!await User.exists({username: "admin"})) {
+    if (await User.count() == 0) {
       const doc = new User({
         username: "admin",
         password: await bcrypt.hash("admin", 10),
