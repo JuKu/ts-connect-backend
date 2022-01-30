@@ -1,6 +1,6 @@
-import { Mongoose } from "mongoose";
-import { IniConfig } from "../config/iniconfig";
-import { connect } from 'mongoose';
+import {Mongoose} from "mongoose";
+import {IniConfig} from "../config/iniconfig";
+import {connect} from "mongoose";
 
 /**
  * This class is responsible for the connection(s) to the MongoDB database.
@@ -8,16 +8,20 @@ import { connect } from 'mongoose';
  * @author Justin Kuenzel
  */
 class MongoDBClient {
-  private configFile: String;
+  private readonly configFile: String;
   private mongoose: Mongoose;
 
   /**
    * the constructor.
    * @constructor
-   * @param {Map<String, String>} config the configuration for the
+   * @param {Map<String, String>} configFile the configuration for the
    * mongodb client
    */
-  MongoDBClient(configFile: string) {
+  constructor(configFile: string) {
+    if (configFile === undefined) {
+      throw new Error("no configuration file path is set");
+    }
+
     this.configFile = configFile;
   }
 
@@ -25,33 +29,63 @@ class MongoDBClient {
    * connect to the MongoDB server.
    */
   async connect() {
-    //read configuration file first
-    let config: any = IniConfig.parseFile(this.configFile);
-    let hostname = config.host;
-    let port = config.port;
-    let database = config.database;
-    let username = config.username;
-    let password = config.password;
-    let retryWrites = config.retryWrites;
-    let w = config.w;
+    if (this.configFile === undefined) {
+      throw new Error("configFile is null");
+    }
+
+    // read configuration file first
+    const config: any = IniConfig.parseFile(this.configFile);
+    const hostname = config.host;
+    const port = config.port;
+    const database = config.database;
+    const username = config.username;
+    const password = config.password;
+    const retryWrites = config.retryWrites;
+    const w = config.w;
 
     this.mongoose = require("mongoose");
-    //const { MongoClient } = require('mongodb');
+    // const { MongoClient } = require('mongodb');
     const uri = "mongodb+srv://" + username + ":" + password + "@" + hostname + "/" + database + "?retryWrites=" + retryWrites + "&w=" + w + "";
-    /*const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    /* const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
     client.connect(err => {
       const collection = client.db("test").collection("devices");
       // perform actions on the collection object
       client.close();
     });*/
 
-    async function run(): Promise<void> {
-      // 4. Connect to MongoDB
-      this.mongoose = await connect(uri);
+    const mongoose = this.mongoose;
+
+    logger.info("connect to MongoDB: " + hostname, {"type": "startup"});
+
+    try {
+      await mongoose.connect(uri);
+    } catch (error) {
+      // eslint-disable-next-line max-len
+      logger.error("Catched error: ", {"type": "error", "message": error.message, "stack": error.stack}, error);
+      process.exit(1);
     }
 
-    //open connection
-    await run();
+    /**
+     * connect to database.
+     */
+    async function run(): Promise<void> {
+      //logger.info("connect to MongoDB: " + hostname, {"type": "startup"});
+
+      // 4. Connect to MongoDB
+      await setTimeout(function() {
+        //this.mongoose.connect(uri);
+        // mongoose.connect('mongodb://localhost:27017/myapp');
+      }, 10000);
+    }
+
+    // open connection
+    try {
+      await run();
+    } catch (error) {
+      // eslint-disable-next-line max-len
+      logger.error("Catched error: ", {"type": "error", "message": error.message, "stack": error.stack}, error);
+      process.exit(1);
+    }
 
     logger.info("connected to MongoDB database", {"type": "startup"});
 
@@ -66,4 +100,4 @@ class MongoDBClient {
   }
 }
 
-module.exports = new MongoDBClient();
+module.exports = new MongoDBClient(ROOT_PATH + "/../../config/mongodb.cfg");

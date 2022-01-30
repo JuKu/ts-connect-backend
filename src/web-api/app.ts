@@ -38,6 +38,8 @@ declare global {
   var app: Express;
   // eslint-disable-next-line no-var
   var mongoose: Mongoose;
+  // eslint-disable-next-line no-var
+  var ROOT_PATH: String;
 }
 
 global.logger = winston.createLogger({
@@ -68,10 +70,12 @@ logger.info(`ROOT_PATH: ${ROOT_PATH}`, {
   "type": "startup",
 });
 
+global.ROOT_PATH = ROOT_PATH;
+
 // connect to MongoDB database
 logger.info("connect to MongoDB...", {"type": "startup"});
 // eslint-disable-next-line max-len
-// global.mongoose = require("../shared/system/database/mongodb-client").connect();
+global.mongoose = require("../shared/system/database/mongodb-client").connect();
 
 // register schemas (not models!)
 require("../shared/system/model/import-models");
