@@ -5,6 +5,8 @@ import fs from "fs";
 import winston from "winston";
 import {Express} from "express-serve-static-core";
 import {Mongoose} from "mongoose";
+import User, {IUser} from "../shared/system/model/user";
+const bcrypt = require("bcryptjs");
 
 /**
  * this is the main file for the web-api application.
@@ -79,6 +81,28 @@ global.mongoose = require("../shared/system/database/mongodb-client").connect();
 
 // register schemas (not models!)
 require("../shared/system/model/import-models");
+
+// TODO: extract this code into other class
+// create user admin, if not exists
+(async () => {
+  try {
+    if (!await User.exists({username: "admin"})) {
+      const doc = new User({
+        username: "admin",
+        password: await bcrypt.hash("admin", 10),
+        email: "admin@example.com",
+        preName: "Admin",
+        lastName: "Admin",
+      });
+      doc.save().then(() => {
+        logger.info("created user 'admin' with password 'admin' successfully");
+      });
+    }
+  } catch (e) {
+    logger.warn("Error occurred while creating admin user: " + e,
+        {"type": "startup", "error": e});
+  }
+})();
 
 logger.info("initialize express...", {"type": "startup"});
 

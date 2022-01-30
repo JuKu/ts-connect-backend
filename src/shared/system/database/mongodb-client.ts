@@ -1,6 +1,5 @@
 import {Mongoose} from "mongoose";
 import {IniConfig} from "../config/iniconfig";
-import {connect} from "mongoose";
 
 /**
  * This class is responsible for the connection(s) to the MongoDB database.
@@ -44,15 +43,7 @@ class MongoDBClient {
     const w = config.w;
 
     this.mongoose = require("mongoose");
-    // const { MongoClient } = require('mongodb');
     const uri = "mongodb+srv://" + username + ":" + password + "@" + hostname + "/" + database + "?retryWrites=" + retryWrites + "&w=" + w + "";
-    /* const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-    client.connect(err => {
-      const collection = client.db("test").collection("devices");
-      // perform actions on the collection object
-      client.close();
-    });*/
-
     const mongoose = this.mongoose;
 
     logger.info("connect to MongoDB: " + hostname, {"type": "startup"});
@@ -63,7 +54,11 @@ class MongoDBClient {
       });
     } catch (error) {
       // eslint-disable-next-line max-len
-      logger.error("Catched error: ", {"type": "error", "message": error.message, "stack": error.stack}, error);
+      logger.error("Catched error: ", {
+        "type": "error",
+        "message": error.message,
+        "stack": error.stack,
+      }, error);
       process.exit(1);
     }
 
