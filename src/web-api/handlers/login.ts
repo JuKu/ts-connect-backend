@@ -30,18 +30,18 @@ module.exports = async () => {
 
     if (req.body == null || req.body.username === undefined) {
       logger.warn("login body is empty");
-      res.status(400);
-      res.json({
-        errorCode: 400,
-        errorMessage: "requested parameters not found",
-      });
+      res.status(400)
+          .json({
+            errorCode: 400,
+            errorMessage: "requested parameters not found",
+          });
       return;
     }
 
     if (req.body.password === undefined) {
       logger.warn("password field was missing", {hostname: req.hostname});
-      res.status(400);
-      res.json({errorCode: 400, errorMessage: "password field was missing"});
+      res.status(400)
+          .json({errorCode: 400, errorMessage: "password field was missing"});
       return;
     }
 
@@ -67,50 +67,33 @@ module.exports = async () => {
           // Create token
           const token = jwt.sign(
               {user_id: user._id, username: user.username, mail: user.email},
-              jwtSecretKey,
+              jwtSecretKey + user.tokenSecret,
               {
                 expiresIn: "30d",
               },
           );
 
-          res.status(200);
-          res.json({
-            "success": true,
-            "token": token,
-          });
+          res.status(200)
+              .json({
+                "success": true,
+                "token": token,
+              });
+          return;
         } else {
           // password is wrong
           res.status(403);
           res.json({
             errorCode: 401,
-            errorMessage: "Password wrong"
+            errorMessage: "Password wrong",
           });
         }
       } else {
-        res.status(404);
-        res.json({
-          errorCode: 404,
-          errorMessage: "User not found",
-        });
+        res.status(404)
+            .json({
+              errorCode: 404,
+              errorMessage: "User not found",
+            });
       }
-
-      // const user = await User.
-      // check, if user exists in database
-      /* db.get("SELECT * FROM users WHERE (username, password) = (?, ?)", [req.body.username, password], function(err, row) {
-        if(row != undefined ) {
-          var payload = {
-            username: req.body.username,
-          };
-
-          var token = jwt.sign(payload, KEY, {algorithm: 'HS256', expiresIn: "15d"});
-          console.log("Success");
-          res.send(token);
-        } else {
-          console.error("Failure");
-          res.status(401)
-          res.send("There's no user matching that");
-        }
-      });*/
 
       res.send("OK");
 
@@ -123,12 +106,12 @@ module.exports = async () => {
             "type": "error", "error": err, "username": req.body.username,
             "errorUUID": errorUUID,
           });
-      res.status(500);
-      res.json({
-        errorCode: 500,
-        errorUUID: errorUUID,
-        errorMessage: "Internal server error while login",
-      });
+      res.status(500)
+          .json({
+            errorCode: 500,
+            errorUUID: errorUUID,
+            errorMessage: "Internal server error while login",
+          });
     }
   });
 };

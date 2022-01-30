@@ -7,6 +7,7 @@ export interface IUser extends Document {
   email: string;
   preName: string;
   lastName: string;
+  tokenSecret: string;
 }
 
 export const UserSchema: Schema = new Schema({
@@ -17,6 +18,9 @@ export const UserSchema: Schema = new Schema({
   email: {type: String, required: true, index: true},
   preName: {type: String, required: true},
   lastName: {type: String, required: true},
+  // this is an additional secret for JWT tokens,
+  // so the token can be invalidated
+  tokenSecret: {type: String, required: true},
 });
 
 const User: Model<IUser> = model("User", UserSchema);

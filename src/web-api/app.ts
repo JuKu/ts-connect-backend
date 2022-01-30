@@ -98,6 +98,7 @@ require("../shared/system/model/import-models");
         email: "admin@example.com",
         preName: "Admin",
         lastName: "Admin",
+        tokenSecret: randomUUID(),
       });
       doc.save().then(() => {
         logger.info("created user 'admin' with password 'admin' successfully");
@@ -142,6 +143,20 @@ app.get("/api/version", (req, res) => {
 
 // register handlers
 require("./handlers/login")();
+
+// This should be the last route else any after it won't work
+app.use("*", (req, res) => {
+  res.status(404).json({
+    success: "false",
+    message: "Page not found",
+    errorCode: 404,
+    errorMessage: "Not Found",
+    error: {
+      statusCode: 404,
+      message: "You reached a route that is not defined on this server",
+    },
+  });
+});
 
 // start the Express server
 app.listen(PORT, () => {
