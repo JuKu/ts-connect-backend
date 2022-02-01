@@ -162,7 +162,24 @@ app.get("/api/secured-endpoint", authCheck, hasRole(["super-admin"]),
     });
 
 // register handlers
-require("./handlers/login")();
+// require("./handlers/login")();
+
+// register all handlers from "handlers"
+const normalizedPath = require("path").join(__dirname, "handlers");
+
+const glob = require("glob");
+const path = require("path");
+
+glob.sync(__dirname + "/handlers/**/*.*")
+    .forEach( function(file: String) {
+      logger.info("load handler: " + file, {"type": "startup"});
+      require(path.resolve(file));
+    });
+
+/* require("fs").readdirSync(normalizedPath).forEach(function(file: String) {
+  logger.debug("load handler: " + file, {"type": "startup"});
+  require("./handlers/" + file);
+});*/
 
 // This should be the last route else any after it won't work
 app.use("*", (req, res) => {
