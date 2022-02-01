@@ -72,6 +72,10 @@ In `config` directory there are several example configuration files.
 Remove the `.example` from these files (e.q. mongodb.example.cfg --> mongodb.cfg) and replace the values in these configuration files.
 You have to do this for all configuration files.
 
+## Add serviceAccountKey.json to config directory
+
+See also: https://firebase.google.com/docs/admin/setup
+
 # Start the server
 
 Run this command in shell:\

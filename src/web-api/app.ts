@@ -133,6 +133,9 @@ app.use(express.urlencoded({extended: true}));
 const auth = require(ROOT_PATH + "/../shared/system/middleware/auth");
 global.authCheck = auth;
 
+// initialize firebase admin sdk
+const firebaseAdminConfig = require("./../shared/system/firebase/admin-config");
+
 // const apiServer: HttpApiServer = new HttpApiServer(app);
 
 // define a route handler for the default home page
@@ -173,7 +176,7 @@ const path = require("path");
 glob.sync(__dirname + "/handlers/**/*.*")
     .forEach( function(file: String) {
       logger.info("load handler: " + file, {"type": "startup"});
-      require(path.resolve(file));
+      require(path.resolve(file))();
     });
 
 /* require("fs").readdirSync(normalizedPath).forEach(function(file: String) {
