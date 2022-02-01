@@ -12,11 +12,12 @@ const {check} = require("express-validator");
  * @author Justin Kuenzel
  */
 module.exports = async () => {
+  // TODO: fix validators
   app.post("/api/admin/topic-notification", [
-    check("title").isLength({min: 3}).trim().escape(),
+    check("title").exists().isLength({min: 3}).trim().escape(),
     // check('email').isEmail().normalizeEmail(),
-    check("message").isLength({min: 3}).trim().escape(),
-    check("targetTopic").isLength({min: 3}).trim().escape(),
+    check("message").exists().isLength({min: 3}).trim().escape(),
+    check("targetTopic").exists().isLength({min: 3}).trim().escape(),
     // eslint-disable-next-line max-len
   ], authCheck, hasRole(["super-admin", "super-developer"]), async (req: Request, res: Response) => {
     // @ts-ignore
@@ -32,6 +33,23 @@ module.exports = async () => {
         {"authorID": userid, "author": username, "title": title,
           "message": message});
 
-    FirebaseAdminSDK.sendTopicNotification(topicName, title, message);
+    try {
+      FirebaseAdminSDK.sendTopicNotification(topicName,
+          title, message);
+    } catch (err) {
+      logger.warn("error while sending topic notification: " + err,
+          {
+            "targetTopic": topicName,
+            "title": title,
+            "message": message,
+            "userid": userid,
+            "username": username,
+          });
+    }
+
+    return res.status(200)
+        .json({
+          "success": true,
+        });
   });
 };

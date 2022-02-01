@@ -32,7 +32,7 @@ export class FirebaseAdminSDK {
       // app is woken on message receipt. This is the default behavior
       // for messages received on Android devices.
       "contentAvailable": true,
-      "collapseKey": collapseKey,
+      // "collapseKey": collapseKey,
     };
 
     const payload = {
@@ -43,18 +43,52 @@ export class FirebaseAdminSDK {
       data: data,
     };
 
-    // send notification to firebase cloud messaging
-    firebaseAdmin.messaging().sendToTopic(targetTopic, payload,
-        notificationOptions).then((value: MessagingTopicResponse) => {
-      const messageId = value.messageId;
-      logger.info("sended notification successfully to topic: '" +
+    try {
+      // send notification to firebase cloud messaging
+      firebaseAdmin.messaging().sendToTopic("/topics/" + targetTopic, payload,
+          notificationOptions)
+          .catch((reason: any) => {
+            logger.warn("Error occured while sending notification" +
+              "to Firebase Messaging topic '" +
+              targetTopic + "'",
+            {
+              "targetTopic": targetTopic,
+              "title": title,
+              "message": message,
+              "error": reason,
+              "errorMessage": reason.message,
+              "payload": payload,
+              "notificationOptions": notificationOptions,
+            });
+          })
+          .then((value: MessagingTopicResponse) => {
+            if (value.messageId == undefined) {
+              // error occurred
+              return;
+            }
+
+            const messageId = value.messageId;
+            logger.info("sended notification successfully to topic: '" +
+          targetTopic + "'",
+            {
+              "messageId": messageId,
+              "targetTopic": targetTopic,
+              "title": title,
+              "message": message,
+            });
+          });
+    } catch (err) {
+      logger.warn("Could not send topic notification to topic '" +
         targetTopic + "'",
       {
-        "messageId": messageId,
         "targetTopic": targetTopic,
         "title": title,
         "message": message,
+        "error": err,
+        "errorMessage": err.message,
+        "payload": payload,
+        "notificationOptions": notificationOptions,
       });
-    });
+    }
   }
 }
