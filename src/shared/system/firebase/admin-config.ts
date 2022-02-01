@@ -19,4 +19,5 @@ admin.initializeApp({
   databaseURL: firebaseConfig.firebaseServiceAccount,
 });
 
-module.exports.firebaseAdmin = admin;
+export const firebaseAdmin = admin;
+module.exports.admin = admin;
