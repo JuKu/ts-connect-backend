@@ -7,7 +7,7 @@
  */
 import {Request, Response} from "express";
 
-export const hasRole = function(requiredRole: String) {
+export const hasRole = function(requiredRoles: Array<String>) {
   return (req: Request, res: Response, next: () => any) => {
     // @ts-ignore
     if (!req.user) {
@@ -24,7 +24,18 @@ export const hasRole = function(requiredRole: String) {
     try {
       // @ts-ignore
       const roles: Array<String> = req.user.globalRoles;
-      if (roles.find((str: String) => str == requiredRole)) {
+
+      // check, if user has one of this roles
+      let hasRole: boolean = false;
+
+      requiredRoles.forEach((requiredRole: String) => {
+        if (roles.find((str: String) => str == requiredRole)) {
+          // user has the permission to access this page
+          hasRole = true;
+        }
+      });
+
+      if (hasRole) {
         // user has the permission to access this page
       } else {
         // user does not have the required role to access this page
@@ -33,7 +44,7 @@ export const hasRole = function(requiredRole: String) {
               errorCode: 403,
               errorMessage: "You do not have the permission to access this" +
               " API endpoint",
-              requiredRole: requiredRole,
+              requiredRoles: requiredRoles,
             });
       }
     } catch (err) {

@@ -153,12 +153,13 @@ app.get("/api/version", (req, res) => {
 });
 
 // authCheck middleware forces authentication of user
-app.get("/api/secured-endpoint", authCheck, hasRole("super-admin"), hasPermission("super-admin"), (req: Request, res: Response) => {
-  return res.status(200)
-      .json({
-        "success": true,
-      });
-});
+app.get("/api/secured-endpoint", authCheck, hasRole(["super-admin"]),
+    hasPermission("super-admin"), (req: Request, res: Response) => {
+      return res.status(200)
+          .json({
+            "success": true,
+          });
+    });
 
 // register handlers
 require("./handlers/login")();
