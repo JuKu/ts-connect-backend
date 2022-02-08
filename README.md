@@ -1,4 +1,7 @@
 # ts-connect-backend
+
+[![CircleCI](https://circleci.com/gh/JuKu/ts-connect-backend/tree/circleci-project-setup.svg?style=svg)](https://circleci.com/gh/JuKu/ts-connect-backend/tree/circleci-project-setup)
+
 The backend for the ts-connect-app
 
 # Server Architecture
