@@ -5,7 +5,8 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  say-hello:
+  build-and-test:
+    working_directory: ~/ts-connect-backend
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
@@ -15,12 +16,51 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+          name: Show current branch
+          command: echo ${CIRCLE_BRANCH}
+      # Restore local dependencies from cache
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package-lock.json" }}
+            - v1-dependencies-
+      # Install project dependencies
+      - run:
+          name: Install local dependencies
+          command: npm install
+      - run:
+          name: Download sonar-scanner
+          command:  |
+            export SONAR_SCANNER_VERSION=4.6.2.2472
+            export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION-linux
+            curl --create-dirs -sSLo $HOME/.sonar/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
+            unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
+            export PATH=$SONAR_SCANNER_HOME/bin:$PATH
+            export SONAR_SCANNER_OPTS="-server"
+      # Cache local dependencies if they don't exist
+      - save_cache:
+          key: v1-dependencies-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+            - $HOME/.sonar
+      # Lint the source code
+      - run:
+          name: Linting
+          command: npm run lint
+      # Test the source code
+#      - run:
+#          name: Testing
+#          command: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI --karma-config karma.conf.js --code-coverage
+            - run:
+          name: Sonarqube
+          command: npm run sonar -- -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=jukusoft -Dsonar.projectKey=ansible-manager-frontend -Dsonar.buildbreaker.skip=false -Dsonar.qualitygate.wait=true -Dsonar.javascript.lcov.reportPaths=coverage/ngv/lcov.info -Dsonar.login=${SONAR_TOKEN}
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  say-hello-workflow:
+  build-and-deploy:
     jobs:
-      - say-hello
+      - build-and-test
