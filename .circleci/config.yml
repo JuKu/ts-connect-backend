@@ -101,7 +101,7 @@ workflows:
   build-and-deploy:
     jobs:
       - build-and-test
-      - deploy
+      - deploy:
           requires:
             - build-and-test
           filters:
@@ -112,7 +112,7 @@ workflows:
               only:
                 - deploy
                 - v*
-      - release
+      - release:
           requires:
             - deploy
           filters:
