@@ -7,7 +7,7 @@ version: 2.1
 executors:
   ci-node:
     docker:
-      - image: cimg/node:ccimg/node:17.4.0
+      - image: cimg/node:17.4.0
     working_directory: ~/ts-connect-backend
 
 jobs:
