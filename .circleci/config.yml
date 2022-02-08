@@ -63,6 +63,39 @@ jobs:
           root: .
           paths:
             - .
+  deploy:
+    executor: ci-node
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: .
+      - setup_remote_docker:
+          version: 20.10.6
+      - run:
+          name: Build docker image for web-api
+          command: docker build -t jukusoft/ts-connect-webapi:${CIRCLE_BRANCH}-latest -f Dockerfile .
+      - run:
+          name: Docker login
+          command: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - run:
+          name: Push docker image for web-api
+          command: docker push jukusoft/ts-connect-webapi:${CIRCLE_BRANCH}-latest
+  release:
+    executor: ci-node
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: .
+      - setup_remote_docker:
+          version: 20.10.6
+      - run:
+          name: Create release tag
+          command: docker tag jukusoft/ts-connect-webapi:${CIRCLE_BRANCH}-latest jukusoft/ts-connect-webapi:${CIRCLE_TAG}
+      - run:
+          name: Push release to Docker Hub
+          command: docker push jukusoft/ts-connect-webapi:${CIRCLE_TAG}
+
+
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
@@ -70,3 +103,24 @@ workflows:
   build-and-deploy:
     jobs:
       - build-and-test
+      - deploy
+          requires:
+            - build-and-test
+          filters:
+            tags:
+              #only: /.*/
+              only: /^v[0-9]+(\.[0-9]+)*$/
+            branches:
+              only:
+                - deploy
+                - v*
+      - release
+          requires:
+            - deploy
+          filters:
+            tags:
+              #only: /.*/
+              only: /^v[0-9]+(\.[0-9]+)*$/
+            branches:
+              ignore: /.*/
+
