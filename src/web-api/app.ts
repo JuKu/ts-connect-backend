@@ -202,8 +202,12 @@ const path = require("path");
 
 glob.sync(__dirname + "/handlers/**/*.*")
     .forEach( function(file: String) {
-      logger.info("load handler: " + file, {"type": "startup"});
-      require(path.resolve(file))();
+      if (file.endsWith(".ts") || file.endsWith(".js")) {
+        logger.info("load handler: " + file, {"type": "startup"});
+        require(path.resolve(file))();
+      } else {
+        logger.info("skip handler: " + file, {"type": "startup"});
+      }
     });
 
 /* require("fs").readdirSync(normalizedPath).forEach(function(file: String) {
