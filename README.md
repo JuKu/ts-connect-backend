@@ -12,7 +12,7 @@ The backend server has some requirements, e.q.:
   - nodejs
   - mongodb
   - ejabberd
-  - (redis server)
+  - redis server
 
 ## Install ejabberd
 
@@ -78,6 +78,17 @@ You have to do this for all configuration files.
 ## Add serviceAccountKey.json to config directory
 
 See also: https://firebase.google.com/docs/admin/setup
+
+## Install Redis Server
+
+You can use docker to do this.
+
+## Install a Redis Monitoring
+
+Something like:
+
+  - https://app.redsmin.com/ or
+  - redis-commander
 
 # Start the server
 
