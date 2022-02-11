@@ -6,7 +6,7 @@ const firebaseServiceAccount = require(ROOT_PATH +
   "/../../config/serviceAccountKey.json");
 
 const firebaseConfig = IniConfig.parseFile(
-    ROOT_PATH + "/../../config/apiserver.cfg",
+    CONFIG_DIR + "apiserver.cfg",
 );
 
 logger.info("initialize Firebase Admin SDK...",

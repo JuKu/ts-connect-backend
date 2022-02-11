@@ -10,7 +10,7 @@ import {IniConfig} from "../config/iniconfig";
 const jwt = require("jsonwebtoken");
 
 const jwtSecretKey: String = IniConfig.parseFile(
-    ROOT_PATH + "/../../config/apiserver.cfg",
+    CONFIG_DIR + "apiserver.cfg",
 ).jwtSecretKey;
 
 if (jwtSecretKey === undefined || jwtSecretKey.length == 0) {

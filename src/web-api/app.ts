@@ -28,7 +28,11 @@ import User, {IUser} from "../shared/system/model/user";
 import {randomUUID} from "crypto";
 import {hasRole} from "../shared/system/middleware/check-role";
 import {hasPermission} from "../shared/system/middleware/check-permission";
+import redis from "redis";
+import {RedisClientType} from "@node-redis/client";
+
 const bcrypt = require("bcryptjs");
+const compression = require("compression");
 
 /**
  * this is the main file for the web-api application.
@@ -42,8 +46,17 @@ const bcrypt = require("bcryptjs");
 const HOST = process.env.HOST || "127.0.0.1";
 const PORT = process.env.PORT || 3000;
 
+const REDIS_HOST = process.env.REDIS_HOST || "127.0.0.1";
+const REDIS_PORT = process.env.REDIS_PORT || 6379;
+const REDIS_PASSWORD = process.env.REDIS_PASSWORD || "";
+const CONFIG_DIR = process.env.CONFIG_DIR || __dirname + "/../../config/";
+
 const ROOT_PATH = __dirname;
-// console.info(`ROOT_PATH: ${ROOT_PATH}`);
+console.info(`ROOT_PATH: ${ROOT_PATH}`);
+
+// connect to redis server
+console.info("connect to redis server");
+
 
 const SERVER_VERSION = JSON.parse(fs.readFileSync(
     ROOT_PATH + "/../../package.json", "utf8"),
@@ -66,6 +79,10 @@ declare global {
   var ROOT_PATH: String;
   // eslint-disable-next-line no-var
   var authCheck: (req: Request, res: Response, next: () => any) => any;
+  // eslint-disable-next-line no-var
+  var redisClient: RedisClientType;
+  // eslint-disable-next-line no-var
+  var CONFIG_DIR: String;
 }
 
 global.logger = winston.createLogger({
@@ -97,6 +114,10 @@ logger.info(`ROOT_PATH: ${ROOT_PATH}`, {
 });
 
 global.ROOT_PATH = ROOT_PATH;
+global.CONFIG_DIR = CONFIG_DIR;
+
+logger.info("ROOT_PATH: " + ROOT_PATH);
+logger.info("CONFIG_DIR: " + CONFIG_DIR);
 
 // connect to MongoDB database
 logger.info("connect to MongoDB...", {"type": "startup"});
@@ -148,6 +169,7 @@ global.app = express();
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(compression);
 
 const auth = require(ROOT_PATH + "/../shared/system/middleware/auth");
 global.authCheck = auth;
