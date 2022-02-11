@@ -2,23 +2,6 @@
 
 import LogRocket from "logrocket";
 
-// import and initialize LogRocket
-// eslint-disable-next-line max-len
-const logRocketToken = require(__dirname + "/../../config/logrocket")["authToken"];
-console.log("LogRocket token: " + logRocketToken);
-LogRocket.init(logRocketToken);
-
-// This is an example script - don't forget to change it!
-LogRocket.identify("-1", {
-  name: "System",
-  email: "root@example.com",
-
-  // Add your own custom user variables here, ie:
-  subscriptionType: "pro",
-});
-
-LogRocket.captureMessage("system startup");
-
 import express, {Request, Response} from "express";
 import fs from "fs";
 import winston from "winston";
@@ -50,6 +33,23 @@ const REDIS_HOST = process.env.REDIS_HOST || "127.0.0.1";
 const REDIS_PORT = process.env.REDIS_PORT || 6379;
 const REDIS_PASSWORD = process.env.REDIS_PASSWORD || "";
 const CONFIG_DIR = process.env.CONFIG_DIR || __dirname + "/../../config/";
+
+// import and initialize LogRocket
+// eslint-disable-next-line max-len
+const logRocketToken = require(CONFIG_DIR + "logrocket")["authToken"];
+console.log("LogRocket token: " + logRocketToken);
+LogRocket.init(logRocketToken);
+
+// This is an example script - don't forget to change it!
+LogRocket.identify("-1", {
+  name: "System",
+  email: "root@example.com",
+
+  // Add your own custom user variables here, ie:
+  subscriptionType: "pro",
+});
+
+LogRocket.captureMessage("system startup");
 
 const ROOT_PATH = __dirname;
 console.info(`ROOT_PATH: ${ROOT_PATH}`);
