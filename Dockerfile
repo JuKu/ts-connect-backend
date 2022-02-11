@@ -22,6 +22,9 @@ COPY . .
 
 RUN chmod -R 777 /usr/src/app/logs
 
+VOLUME ["/usr/src/app/config"]
+VOLUME ["/usr/src/app/logs"]
+
 EXPOSE 8080
 
 CMD [ "npm", "run", "start-prod" ]
