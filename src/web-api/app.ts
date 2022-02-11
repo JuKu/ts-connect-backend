@@ -1,6 +1,6 @@
 "use strict";
 
-import LogRocket from "logrocket";
+import "../shared/system/logger/logrocket";
 
 import express, {Request, Response} from "express";
 import fs from "fs";
@@ -13,6 +13,7 @@ import {hasRole} from "../shared/system/middleware/check-role";
 import {hasPermission} from "../shared/system/middleware/check-permission";
 import redis from "redis";
 import {RedisClientType} from "@node-redis/client";
+import LogRocket from "logrocket";
 
 const bcrypt = require("bcryptjs");
 const compression = require("compression");
@@ -33,21 +34,6 @@ const REDIS_HOST = process.env.REDIS_HOST || "127.0.0.1";
 const REDIS_PORT = process.env.REDIS_PORT || 6379;
 const REDIS_PASSWORD = process.env.REDIS_PASSWORD || "";
 const CONFIG_DIR = process.env.CONFIG_DIR || __dirname + "/../../config/";
-
-// import and initialize LogRocket
-// eslint-disable-next-line max-len
-const logRocketToken = require(CONFIG_DIR + "logrocket")["authToken"];
-console.log("LogRocket token: " + logRocketToken);
-LogRocket.init(logRocketToken);
-
-// This is an example script - don't forget to change it!
-LogRocket.identify("-1", {
-  name: "System",
-  email: "root@example.com",
-
-  // Add your own custom user variables here, ie:
-  subscriptionType: "pro",
-});
 
 LogRocket.captureMessage("system startup");
 
