@@ -130,10 +130,7 @@ void async function main() {
 }();
 
 // eslint-disable-next-line require-jsdoc
-async function startWebAPI() {
-  // connect to redis server
-  console.info("connect to redis server");
-
+async function connectToServices() {
   // connect to MongoDB database
   logger.info("connect to MongoDB...", {"type": "startup"});
   // eslint-disable-next-line max-len
@@ -141,6 +138,16 @@ async function startWebAPI() {
 
   // register schemas (not models!)
   await require("../shared/system/model/import-models");
+
+  // connect to redis server
+  console.info("connect to redis server");
+
+  // TODO: add code here
+}
+
+// eslint-disable-next-line require-jsdoc
+async function startWebAPI() {
+  await connectToServices();
 
   // TODO: extract this code into other class
   // create user admin, if no other user exists
@@ -164,18 +171,17 @@ async function startWebAPI() {
           globalPermissions: ["super-admin"],
         });
         doc.save().then(() => {
+          // eslint-disable-next-line max-len
           logger.info("created user 'admin' with password 'admin' successfully");
         });
       }
     } catch (e) {
       logger.warn("Error occurred while creating admin user: " + e,
-        {"type": "startup", "error": e});
+          {"type": "startup", "error": e});
     }
   })();
 
   logger.info("initialize express...", {"type": "startup"});
-
-  // TODO: create admin user, if not exists or call startup handlers
 
   // create a new express application
   global.app = express();
@@ -184,12 +190,13 @@ async function startWebAPI() {
   app.use(express.static("public"));
   app.use(express.json());
   app.use(express.urlencoded({extended: true}));
-  app.use(compression);
+  // app.use(compression);
 
   const auth = require(ROOT_PATH + "/../shared/system/middleware/auth");
   global.authCheck = auth;
 
   // initialize firebase admin sdk
+  // eslint-disable-next-line max-len
   const firebaseAdminConfig = require("./../shared/system/firebase/admin-config");
 
   // const apiServer: HttpApiServer = new HttpApiServer(app);
