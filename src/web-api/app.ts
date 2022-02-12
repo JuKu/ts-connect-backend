@@ -274,5 +274,7 @@ async function startWebAPI() {
 
 // eslint-disable-next-line require-jsdoc
 async function startWorkerNode() {
+  await connectToServices();
+
   // TODO: add code here to start the notifier service and worker node
 }
