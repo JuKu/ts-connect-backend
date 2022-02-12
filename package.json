@@ -10,7 +10,7 @@
     "start-dev": "tsc --rootDir ./src/ &&  nodemon ./src/web-api/app.ts",
     "start-prod": "tsc --rootDir ./src/ &&  node dist/web-api/app.js",
     "start-notification-service": "node .",
-    "test": "cross-env NODE_ENV=test jest --testTimeout=10000 --experimental-vm-modules",
+    "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
     "test-old": "jest",
     "lint": "eslint . --ext .ts --fix"
   },
