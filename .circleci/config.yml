@@ -53,9 +53,9 @@ jobs:
           name: Linting
           command: npm run lint
       # Test the source code
-     - run:
-         name: Testing
-         command: npm run test -- --no-watch --no-progress --code-coverage
+      - run:
+          name: Testing
+          command: npm run test -- --no-watch --no-progress --code-coverage
       #- run:
       #    name: Sonarqube
       #    command: npm run sonar -- -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=jukusoft -Dsonar.projectKey=ansible-manager-frontend -Dsonar.buildbreaker.skip=false -Dsonar.qualitygate.wait=true -Dsonar.javascript.lcov.reportPaths=coverage/ngv/lcov.info -Dsonar.login=${SONAR_TOKEN}
