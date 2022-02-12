@@ -1,6 +1,6 @@
 import winston from "winston";
-import { Express } from "express-serve-static-core";
-import { Mongoose } from "mongoose";
+import {Express} from "express-serve-static-core";
+import {Mongoose} from "mongoose";
 import {Request, Response} from "express";
 import {RedisClientType} from "@node-redis/client";
 
