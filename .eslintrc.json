@@ -5,14 +5,18 @@
         "es2021": true
     },
     "extends": [
-        "google"
+        "google",
+        "plugin:security/recommended",
+        "plugin:security-node/recommended"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaVersion": "latest"
     },
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "security",
+        "security-node"
     ],
     "rules": {
         "semi": ["error", "always"],
