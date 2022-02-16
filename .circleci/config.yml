@@ -59,15 +59,16 @@ jobs:
       - run:
           name: Testing
           command: npm run test -- --no-watch --no-progress
-      - run:
-          name: Show path
-          command: echo "$PATH"
-      - run:
-          name: Prepare sonar-scanner
-          command: chmod +x /home/circleci/ts-connect-backend/node_modules/sonar-scanner/bin/sonar-scanner
-      - run:
-          name: Sonarqube
-          command: $HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION-linux/bin/sonar-scanner -Dsonar.organization=jukusoft -Dsonar.projectKey=ts-connect-backend -Dsonar.sources=src -Dsonar.host.url=https://sonarcloud.io
+      #- run:
+      #    name: Show path
+      #    command: echo "$PATH"
+      #- run:
+      #    name: Prepare sonar-scanner
+      #    command: chmod +x /home/circleci/ts-connect-backend/node_modules/sonar-scanner/bin/sonar-scanner
+      - sonarcloud/scan
+      #- run:
+      #    name: Sonarqube
+      #    command: sonar-scanner -Dsonar.organization=jukusoft -Dsonar.projectKey=ts-connect-backend -Dsonar.sources=src -Dsonar.host.url=https://sonarcloud.io
       #- run:
       #    name: Sonarqube
       #    command: npm run sonar -- -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=jukusoft -Dsonar.projectKey=ts-connect-backend -Dsonar.buildbreaker.skip=false -Dsonar.qualitygate.wait=true -Dsonar.javascript.lcov.reportPaths=coverage/ngv/lcov.info -Dsonar.login=${SONAR_TOKEN}
@@ -107,6 +108,8 @@ jobs:
           name: Push release to Docker Hub
           command: docker push jukusoft/ts-connect-webapi:${CIRCLE_TAG}
 
+orbs:
+  sonarcloud: sonarsource/sonarcloud@1.0.3
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
