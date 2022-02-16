@@ -58,7 +58,7 @@ jobs:
       #    command: npm install jest -g
       - run:
           name: Testing
-          command: npm run test -- --no-watch --no-progress
+          command: npm run test -- --no-watch --no-progress --coverage --testTimeout=10000
       #- run:
       #    name: Show path
       #    command: echo "$PATH"
@@ -72,7 +72,7 @@ jobs:
       #    command: sonar-scanner -Dsonar.organization=jukusoft -Dsonar.projectKey=ts-connect-backend -Dsonar.sources=src -Dsonar.host.url=https://sonarcloud.io
       #- run:
       #    name: Sonarqube
-      #    command: npm run sonar -- -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=jukusoft -Dsonar.projectKey=ts-connect-backend -Dsonar.buildbreaker.skip=false -Dsonar.qualitygate.wait=true -Dsonar.javascript.lcov.reportPaths=coverage/ngv/lcov.info -Dsonar.login=${SONAR_TOKEN}
+      #    command: npm run sonar -- -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=jukusoft -Dsonar.projectKey=ts-connect-backend -Dsonar.buildbreaker.skip=false -Dsonar.qualitygate.wait=true -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info -Dsonar.login=${SONAR_TOKEN}
       - persist_to_workspace:
           root: .
           paths:
