@@ -1,7 +1,8 @@
 import {Request, Response} from "express";
 import {hasRole} from "../../../shared/system/middleware/check-role";
+
 // eslint-disable-next-line max-len
-import {FirebaseAdminSDK} from "../../../shared/system/firebase/firebase-admin-sdk";
+// import {FirebaseAdminSDK} from "../../../shared/system/firebase/firebase-admin-sdk";
 
 const {check} = require("express-validator");
 
@@ -34,8 +35,9 @@ module.exports = async () => {
           "message": message});
 
     try {
-      FirebaseAdminSDK.sendTopicNotification(topicName,
-          title, message);
+      // TODO: uncomment this later
+      /* FirebaseAdminSDK.sendTopicNotification(topicName,
+          title, message);*/
     } catch (err) {
       logger.warn("error while sending topic notification: " + err,
           {

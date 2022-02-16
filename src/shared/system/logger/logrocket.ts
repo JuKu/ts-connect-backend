@@ -5,7 +5,7 @@ const CONFIG_DIR = process.env.CONFIG_DIR || __dirname + "/../../../../config/";
 // import and initialize LogRocket
 // eslint-disable-next-line max-len
 const logRocketToken = require(CONFIG_DIR + "logrocket")["authToken"];
-console.log("LogRocket token: " + logRocketToken);
+// console.log("LogRocket token: " + logRocketToken);
 LogRocket.init(logRocketToken);
 
 // This is an example script - don't forget to change it!

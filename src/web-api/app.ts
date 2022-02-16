@@ -14,6 +14,7 @@ import {hasRole} from "../shared/system/middleware/check-role";
 import {hasPermission} from "../shared/system/middleware/check-permission";
 import {RedisClientType} from "@node-redis/client";
 import LogRocket from "logrocket";
+import * as http from "http";
 
 const bcrypt = require("bcryptjs");
 const compression = require("compression");
@@ -33,22 +34,6 @@ const PORT = process.env.PORT || 3000;
 const REDIS_HOST = process.env.REDIS_HOST || "127.0.0.1";
 const REDIS_PORT = process.env.REDIS_PORT || 6379;
 const REDIS_PASSWORD = process.env.REDIS_PASSWORD || "";
-const CONFIG_DIR = process.env.CONFIG_DIR || __dirname + "/../../config/";
-
-LogRocket.captureMessage("system startup");
-
-const ROOT_PATH = __dirname;
-console.info(`ROOT_PATH: ${ROOT_PATH}`);
-
-const SERVER_VERSION = JSON.parse(fs.readFileSync(
-    ROOT_PATH + "/../../package.json", "utf8"),
-).version;
-
-// require("../shared/system/logger/logger");
-
-// initialize logger
-// console.info("initialize winston logger...");
-const {createLogger, loggers, format, transports} = require("winston");
 
 declare global {
   // eslint-disable-next-line no-var
@@ -66,6 +51,23 @@ declare global {
   // eslint-disable-next-line no-var
   var CONFIG_DIR: string;
 }
+
+const CONFIG_DIR = process.env.CONFIG_DIR || __dirname + "/../../config/";
+
+LogRocket.captureMessage("system startup");
+
+const ROOT_PATH = __dirname;
+// console.info(`ROOT_PATH: ${ROOT_PATH}`);
+
+const SERVER_VERSION = JSON.parse(fs.readFileSync(
+    ROOT_PATH + "/../../package.json", "utf8"),
+).version;
+
+// require("../shared/system/logger/logger");
+
+// initialize logger
+// console.info("initialize winston logger...");
+const {createLogger, loggers, format, transports} = require("winston");
 
 global.logger = winston.createLogger({
   level: "info",
@@ -104,13 +106,14 @@ logger.info("CONFIG_DIR: " + CONFIG_DIR);
 /*
 * the main method for the web-api.
 */
-void async function main() {
+// eslint-disable-next-line require-jsdoc
+export default async function main() {
   const appType = process.env.APP_TYPE || "web-api";
 
   try {
     if (appType == "web-api") {
       logger.info("start web-api");
-      await startWebAPI();
+      return await startWebAPI();
     } else if (appType == "worker") {
       logger.info("start worker-node");
       await startWorkerNode();
@@ -122,13 +125,18 @@ void async function main() {
   } catch (e) {
     logger.error("Error catched on top-level: " + e.message, {
       "error": e,
-      "errorMessage": e.message,
-      "stacktrace": e.stacktrace,
+      "errorMessage": e.message || "",
+      "stacktrace": e.stacktrace || "",
     });
-    console.error("error catched on top-level: " + e.message);
-    process.exit(1);
+    // eslint-disable-next-line max-len
+    console.error("error catched on top-level: " + e.message + ", stacktrace:\n" + e.stacktrace);
+
+    // @ts-ignore
+    if (process.env["TEST_MDE"] !== "true") {
+      process.exit(1);
+    }
   }
-}();
+};
 
 // eslint-disable-next-line require-jsdoc
 async function connectToServices() {
@@ -141,13 +149,15 @@ async function connectToServices() {
   await require("../shared/system/model/import-models");
 
   // connect to redis server
-  console.info("connect to redis server");
+  logger.info("connect to redis server", {"type": "startup"});
 
   // TODO: add code here
 }
 
+let appServer: http.Server;
+
 // eslint-disable-next-line require-jsdoc
-async function startWebAPI() {
+export async function startWebAPI(): Promise<http.Server | Express> {
   await connectToServices();
 
   // TODO: extract this code into other class
@@ -268,12 +278,12 @@ async function startWebAPI() {
   });
 
   /**
-  * This is the error handler for the routes.
+   * This is the error handler for the routes.
    * @param {any} err error
    * @param {Request} req request
    * @param {Response} res response
    * @param {NextFunction} next next middleware
-  */
+   */
   function logErrors(err: { stack: any; }, req: Request, res: Response,
       next: NextFunction) {
     // generate an unique request ID, so that the user can give the ID to the
@@ -281,8 +291,11 @@ async function startWebAPI() {
     const reqUUID = randomUUID();
 
     logger.error("Internal server error! " + err.stack,
-        {"type": "crash", "crash-prevented": true, "error": err,
-          "reqUUID": reqUUID});
+        {
+          "type": "crash", "crash-prevented": true, "error": err,
+          "request-path": req.path,
+          "reqUUID": reqUUID,
+        });
     console.error(err.stack);
 
     // get error 500
@@ -302,8 +315,14 @@ async function startWebAPI() {
 
   app.use(logErrors);
 
+  // @ts-ignore
+  if (global.DO_NOT_START_SERVER !== undefined) {
+    return app;
+  }
+
   // start the Express server
-  app.listen(PORT, () => {
+  logger.info("start server now...", {"type": "startup"});
+  return app.listen(PORT, () => {
     // console.log( `server started at http://${ HOST }:${ PORT }` );
     logger.info(`server started at http://${HOST}:${PORT}`, {"type": "startup"});
   });
@@ -314,4 +333,9 @@ async function startWorkerNode() {
   await connectToServices();
 
   // TODO: add code here to start the notifier service and worker node
+}
+
+// @ts-ignore
+if (typeof DO_NOT_START_SERVER === "undefined") {
+  main().then((r: any) => console.log("server started"));
 }
