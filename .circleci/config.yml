@@ -65,7 +65,7 @@ jobs:
       #- run:
       #    name: Prepare sonar-scanner
       #    command: chmod +x /home/circleci/ts-connect-backend/node_modules/sonar-scanner/bin/sonar-scanner
-      # see also: https://circleci.com/developer/orbs/orb/sonarsource/sonarcloud
+      # sonar-scanner, see also: https://circleci.com/developer/orbs/orb/sonarsource/sonarcloud
       - sonarcloud/scan
       #- run:
       #    name: Sonarqube
