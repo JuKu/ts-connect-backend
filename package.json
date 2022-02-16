@@ -57,7 +57,7 @@
     "setimmediate": "^1.0.5",
     "socket.io": "^4.4.1",
     "uuid": "^8.3.2",
-    "validator": "^13.7.0",
+    "validator": ">=13.7.0",
     "winston": "^3.4.0"
   },
   "devDependencies": {
