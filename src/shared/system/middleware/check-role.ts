@@ -26,16 +26,16 @@ export const hasRole = function(requiredRoles: Array<string>) {
       const roles: Array<string> = req.user.globalRoles;
 
       // check, if user has one of this roles
-      let hasRole: boolean = false;
+      let hasRole1: boolean = false;
 
       requiredRoles.forEach((requiredRole: string) => {
         if (roles.find((str: string) => str == requiredRole)) {
           // user has the permission to access this page
-          hasRole = true;
+          hasRole1 = true;
         }
       });
 
-      if (hasRole) {
+      if (hasRole1) {
         // user has the permission to access this page
       } else {
         // user does not have the required role to access this page
