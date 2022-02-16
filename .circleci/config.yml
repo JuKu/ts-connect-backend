@@ -58,7 +58,8 @@ jobs:
       #    command: npm install jest -g
       - run:
           name: Testing
-          command: npm run test -- --no-watch --no-progress --coverage --testTimeout=10000
+          command: npm run test
+          # -- --no-watch --no-progress --coverage --testTimeout=10000
       #- run:
       #    name: Show path
       #    command: echo "$PATH"
