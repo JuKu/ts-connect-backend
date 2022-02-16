@@ -9,7 +9,7 @@ const crypto = require("crypto");
 const {check} = require("express-validator");
 const bcrypt = require("bcryptjs");
 
-const jwtSecretKey: String = IniConfig.parseFile(
+const jwtSecretKey: string = IniConfig.parseFile(
     CONFIG_DIR + "apiserver.cfg",
 ).jwtSecretKey;
 

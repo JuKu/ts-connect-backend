@@ -58,13 +58,13 @@ declare global {
   // eslint-disable-next-line no-var
   var mongoose: Mongoose;
   // eslint-disable-next-line no-var
-  var ROOT_PATH: String;
+  var ROOT_PATH: string;
   // eslint-disable-next-line no-var
   var authCheck: (req: Request, res: Response, next: () => any) => any;
   // eslint-disable-next-line no-var
   var redisClient: RedisClientType;
   // eslint-disable-next-line no-var
-  var CONFIG_DIR: String;
+  var CONFIG_DIR: string;
 }
 
 global.logger = winston.createLogger({
@@ -239,7 +239,7 @@ async function startWebAPI() {
   const path = require("path");
 
   glob.sync(__dirname + "/handlers/**/*.*")
-      .forEach(function(file: String) {
+      .forEach(function(file: string) {
         if (file.endsWith(".ts") || file.endsWith(".js")) {
           logger.info("load handler: " + file, {"type": "startup"});
           require(path.resolve(file))();
@@ -248,7 +248,7 @@ async function startWebAPI() {
         }
       });
 
-  /* require("fs").readdirSync(normalizedPath).forEach(function(file: String) {
+  /* require("fs").readdirSync(normalizedPath).forEach(function(file: string) {
     logger.debug("load handler: " + file, {"type": "startup"});
     require("./handlers/" + file);
   });*/

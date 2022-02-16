@@ -9,7 +9,7 @@ import {Request, Response} from "express";
 import {IniConfig} from "../config/iniconfig";
 const jwt = require("jsonwebtoken");
 
-const jwtSecretKey: String = IniConfig.parseFile(
+const jwtSecretKey: string = IniConfig.parseFile(
     CONFIG_DIR + "apiserver.cfg",
 ).jwtSecretKey;
 

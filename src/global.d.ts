@@ -12,13 +12,13 @@ declare global {
     // eslint-disable-next-line no-var
     var mongoose: Mongoose;
     // eslint-disable-next-line no-var
-    var ROOT_PATH: String;
+    var ROOT_PATH: string;
     // eslint-disable-next-line no-var
     var authCheck: (req: Request, res: Response, next: () => any) => any;
     // eslint-disable-next-line no-var
     var redisClient: RedisClientType;
     // eslint-disable-next-line no-var
-    var CONFIG_DIR: String;
+    var CONFIG_DIR: string;
 }
 
 export { };

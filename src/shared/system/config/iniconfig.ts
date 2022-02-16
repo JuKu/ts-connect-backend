@@ -19,7 +19,7 @@ export class IniConfig {
    * @param {String} configFilePath path to configuration file to parse
    * @return {any} configuration values as json object
    */
-  public static parseFile(configFilePath: String): any {
+  public static parseFile(configFilePath: string): any {
     // logger.info("parse config file: " + configFilePath);
     const fs = require("fs");
     const ini = require("ini");

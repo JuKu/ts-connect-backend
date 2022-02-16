@@ -33,7 +33,7 @@ export class HttpApiServer implements ApiServer {
    * @param {Function} fn the function which has to be executed on
    * this endpoint
    */
-  public get(endpoint: String, fn: (req: Request, res: Response) => any) {
+  public get(endpoint: string, fn: (req: Request, res: Response) => any) {
     this.express.get(endpoint, fn);
   }
 }

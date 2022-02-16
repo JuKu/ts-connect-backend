@@ -28,8 +28,8 @@ export const hasRole = function(requiredRoles: Array<String>) {
       // check, if user has one of this roles
       let hasRole: boolean = false;
 
-      requiredRoles.forEach((requiredRole: String) => {
-        if (roles.find((str: String) => str == requiredRole)) {
+      requiredRoles.forEach((requiredRole: string) => {
+        if (roles.find((str: string) => str == requiredRole)) {
           // user has the permission to access this page
           hasRole = true;
         }

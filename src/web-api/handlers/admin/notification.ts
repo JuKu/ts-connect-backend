@@ -23,7 +23,7 @@ module.exports = async () => {
     // @ts-ignore
     const userid: Number = req.user.userid;
     // @ts-ignore
-    const username: String = req.user.username;
+    const username: string = req.user.username;
 
     const title = req.body.title;
     const message = req.body.message;

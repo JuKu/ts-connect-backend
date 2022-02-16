@@ -21,9 +21,9 @@ export class FirebaseAdminSDK {
    * @param {String} priority
    * @param {Number} ttl
    */
-  public static sendTopicNotification(targetTopic: String, title: String,
-      message: String, data: any = {}, collapseKey: String = undefined,
-      priority: String = "high",
+  public static sendTopicNotification(targetTopic: string, title: string,
+      message: string, data: any = {}, collapseKey: string = undefined,
+      priority: string = "high",
       ttl: number = 60 * 60 * 24 * 7): void {
     const notificationOptions = {
       "priority": priority,

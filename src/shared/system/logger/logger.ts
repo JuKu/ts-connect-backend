@@ -119,7 +119,7 @@ export class Logger {
    * @param {String} msg log message
    * @param {Map<String, String>} metaData additional meta to be used by ELK
    */
-  public debug(msg: String, metaData?: Map<String, any>) {
+  public debug(msg: string, metaData?: Map<String, any>) {
     this.checkInitialized();
     getLogger().debug(msg, metaData);
   }
@@ -129,7 +129,7 @@ export class Logger {
    * @param {String} msg log message
    * @param {Map<String, String>} metaData additional meta to be used by ELK
    */
-  public info(msg: String, metaData?: Map<String, any>) {
+  public info(msg: string, metaData?: Map<String, any>) {
     this.checkInitialized();
     if (getLogger() == null) {
       console.error("logger is null");
@@ -143,7 +143,7 @@ export class Logger {
    * @param {String} msg log message
    * @param {Map<String, String>} metaData additional meta to be used by ELK
    */
-  public http(msg: String, metaData?: Map<String, any>) {
+  public http(msg: string, metaData?: Map<String, any>) {
     this.checkInitialized();
     getLogger().http(msg, metaData);
   }
@@ -153,7 +153,7 @@ export class Logger {
    * @param {String} msg log message
    * @param {Map<String, String>} metaData additional meta to be used by ELK
    */
-  public warn(msg: String, metaData?: Map<String, any>) {
+  public warn(msg: string, metaData?: Map<String, any>) {
     this.checkInitialized();
     getLogger().warn(msg, metaData);
   }
@@ -163,7 +163,7 @@ export class Logger {
    * @param {String} msg log message
    * @param {Map<String, String>} metaData additional meta to be used by ELK
    */
-  public error(msg: String, metaData?: Map<String, any>) {
+  public error(msg: string, metaData?: Map<String, any>) {
     this.checkInitialized();
     getLogger().error(msg, metaData);
   }

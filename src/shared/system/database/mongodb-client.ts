@@ -7,7 +7,7 @@ import {IniConfig} from "../config/iniconfig";
  * @author Justin Kuenzel
  */
 class MongoDBClient {
-  private readonly configFile: String;
+  private readonly configFile: string;
   private mongoose: Mongoose;
 
   /**

@@ -8,7 +8,7 @@
 import {Request, Response} from "express";
 import User, {IUser} from "../model/user";
 
-export const hasPermission = function(requiredPermission: String) {
+export const hasPermission = function(requiredPermission: string) {
   return async (req: Request, res: Response, next: () => any) => {
     // @ts-ignore
     if (!req.user) {
@@ -36,7 +36,7 @@ export const hasPermission = function(requiredPermission: String) {
       const permissions: Array<String> = user1.globalPermissions;
 
       if (permissions !== undefined && permissions.length > 0 &&
-        permissions.find((str: String) => str == requiredPermission)) {
+        permissions.find((str: string) => str == requiredPermission)) {
         // user has the permission to access this page
       } else {
         // user does not have the required role to access this page
