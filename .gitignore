@@ -960,3 +960,4 @@ config
 !config/*example*
 !*example*
 !*spec*
+test-report.xml
