@@ -3,6 +3,7 @@
 import "../shared/system/logger/logrocket";
 
 import express, {Request, Response} from "express";
+import helmet from "helmet";
 import fs from "fs";
 import winston from "winston";
 import {Express} from "express-serve-static-core";
@@ -187,6 +188,7 @@ async function startWebAPI() {
   global.app = express();
 
   // register express nmiddleware
+  app.use(helmet());
   app.use(express.static("public"));
   app.use(express.json());
   app.use(express.urlencoded({extended: true}));

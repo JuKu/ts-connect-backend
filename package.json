@@ -44,6 +44,7 @@
     "firebase-admin": "^10.0.2",
     "glob": "^7.2.0",
     "gzip": "^0.1.0",
+    "helmet": "^5.0.2",
     "ini": "^2.0.0",
     "ioredis": "^4.28.5",
     "jsonwebtoken": "^8.5.1",

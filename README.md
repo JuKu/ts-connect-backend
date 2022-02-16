@@ -1,6 +1,7 @@
 # ts-connect-backend
 
 [![CircleCI](https://circleci.com/gh/JuKu/ts-connect-backend/tree/master.svg?style=svg)](https://circleci.com/gh/JuKu/ts-connect-backend/tree/master)
+[![Known Vulnerabilities](https://snyk.io/test/github/JuKu/ts-connect-backend/badge.svg)](https://snyk.io/test/github/JuKu/ts-connect-backend)
 
 The backend for the ts-connect-app
 
