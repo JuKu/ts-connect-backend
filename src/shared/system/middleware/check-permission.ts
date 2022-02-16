@@ -23,7 +23,7 @@ export const hasPermission = function(requiredPermission: string) {
     }
 
     // @ts-ignore
-    const userid: Number = req.user.userid;
+    const userid: number = req.user.userid;
 
     try {
       // @ts-ignore

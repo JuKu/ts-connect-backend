@@ -21,7 +21,7 @@ module.exports = async () => {
     // eslint-disable-next-line max-len
   ], authCheck, hasRole(["super-admin", "super-developer"]), async (req: Request, res: Response) => {
     // @ts-ignore
-    const userid: Number = req.user.userid;
+    const userid: number = req.user.userid;
     // @ts-ignore
     const username: string = req.user.username;
 
