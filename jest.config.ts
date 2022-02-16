@@ -163,7 +163,7 @@ export default {
   // testRegex: [],
 
   // This option allows the use of a custom results processor
-  testResultsProcessor: "jest-sonar-reporter",
+  //testResultsProcessor: "jest-sonar-reporter",
 
   // This option allows use of a custom test runner
   // testRunner: "jest-circus/runner",
