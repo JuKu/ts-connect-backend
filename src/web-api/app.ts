@@ -2,7 +2,7 @@
 
 import "../shared/system/logger/logrocket";
 
-import express, {Request, Response} from "express";
+import express, {NextFunction, Request, Response} from "express";
 import helmet from "helmet";
 import fs from "fs";
 import winston from "winston";
@@ -266,6 +266,41 @@ async function startWebAPI() {
       },
     });
   });
+
+  /**
+  * This is the error handler for the routes.
+   * @param {any} err error
+   * @param {Request} req request
+   * @param {Response} res response
+   * @param {NextFunction} next next middleware
+  */
+  function logErrors(err: { stack: any; }, req: Request, res: Response,
+      next: NextFunction) {
+    // generate an unique request ID, so that the user can give the ID to the
+    // support and they can say, whats going wrong.
+    const reqUUID = randomUUID();
+
+    logger.error("Internal server error! " + err.stack,
+        {"type": "crash", "crash-prevented": true, "error": err,
+          "reqUUID": reqUUID});
+    console.error(err.stack);
+
+    // get error 500
+    res.status(500).json({
+      success: "false",
+      message: "Internal server error",
+      errorCode: 500,
+      errorMessage: "Internal Server Error",
+      error: {
+        statusCode: 500,
+        message: "Internal Server Error. Please contact the developer to " +
+          "fix this issue. Request ID: " + reqUUID,
+        reqUUID: reqUUID,
+      },
+    });
+  }
+
+  app.use(logErrors);
 
   // start the Express server
   app.listen(PORT, () => {
