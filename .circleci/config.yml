@@ -60,6 +60,9 @@ jobs:
           name: Testing
           command: npm run test -- --no-watch --no-progress
       - run:
+          name: Show path
+          command: echo "$PATH"
+      - run:
           name: Prepare sonar-scanner
           command: chmod +x /home/circleci/ts-connect-backend/node_modules/sonar-scanner/bin/sonar-scanner
       - run:
