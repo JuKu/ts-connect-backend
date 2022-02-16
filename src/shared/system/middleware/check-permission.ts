@@ -33,7 +33,7 @@ export const hasPermission = function(requiredPermission: string) {
         throw new Error("user not found: " + userid);
       }
 
-      const permissions: Array<String> = user1.globalPermissions;
+      const permissions: Array<string> = user1.globalPermissions;
 
       if (permissions !== undefined && permissions.length > 0 &&
         permissions.find((str: string) => str == requiredPermission)) {

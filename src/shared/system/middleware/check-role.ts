@@ -7,7 +7,7 @@
  */
 import {Request, Response} from "express";
 
-export const hasRole = function(requiredRoles: Array<String>) {
+export const hasRole = function(requiredRoles: Array<string>) {
   return (req: Request, res: Response, next: () => any) => {
     // @ts-ignore
     if (!req.user) {
@@ -23,7 +23,7 @@ export const hasRole = function(requiredRoles: Array<String>) {
 
     try {
       // @ts-ignore
-      const roles: Array<String> = req.user.globalRoles;
+      const roles: Array<string> = req.user.globalRoles;
 
       // check, if user has one of this roles
       let hasRole: boolean = false;
