@@ -62,7 +62,7 @@ jobs:
           # -- --no-watch --no-progress --coverage --testTimeout=10000
       - run:
           name: Fix lcov.info file
-          command: cat coverage/lcov.info | while IFS= read -r line; do if [[ "$line" == "SF:"* ]]; then line="SF:\$(realpath "\${line#SF:}")"; fi; echo "\$line"; done > /tmp/lcov.info
+          command: cat coverage/lcov.info | while IFS= read -r line; do if [[ "$line" == "SF:"* ]]; then line="SF:$(realpath "${line#SF:}")"; fi; echo "$line"; done > /tmp/lcov.info
       - run:
           name: Move correct lcov file
           command: mv /tmp/lcov.info coverage/lcov.info
