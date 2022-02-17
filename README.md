@@ -1,9 +1,11 @@
-# ts-connect-backend
+# ts-connect-backend (DEPRECATED)
 
 [![CircleCI](https://circleci.com/gh/JuKu/ts-connect-backend/tree/master.svg?style=svg)](https://circleci.com/gh/JuKu/ts-connect-backend/tree/master)
 [![Known Vulnerabilities](https://snyk.io/test/github/JuKu/ts-connect-backend/badge.svg)](https://snyk.io/test/github/JuKu/ts-connect-backend)
 
 The backend for the ts-connect-app
+
+CURRENT VERSION OF BACKEND IS HERE: https://github.com/JuKu/ts-connect-backend-v2
 
 # Server Architecture
 
