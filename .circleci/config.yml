@@ -58,7 +58,7 @@ jobs:
       #    command: npm install jest -g
       - run:
           name: Testing
-          command: npm run test
+          command: NODE_ENV=test npm run test
           # -- --no-watch --no-progress --coverage --testTimeout=10000
       - run:
           name: Fix lcov.info file
