@@ -1,8 +1,9 @@
 import LogRocket from "logrocket";
+import {DO_NOT_START_SERVER} from "../../../test/app.spec";
 
 // do not use logrocket in tests
 // @ts-ignore
-if (global.DO_NOT_START_SERVER === undefined) {
+if (process.env["NODE_ENV"] !== "test") {
   // eslint-disable-next-line max-len
   const CONFIG_DIR = process.env.CONFIG_DIR || __dirname + "/../../../../config/";
 
