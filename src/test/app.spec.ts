@@ -17,10 +17,13 @@ console.log = jest.fn();
 console.info = jest.fn();
 console.error = jest.fn();
 
+LogRocket.captureMessage = jest.fn();
+
 import main, {startWebAPI} from "../web-api/app";
 import supertest from "supertest";
 import winston, {format, transports} from "winston";
 import {Express} from "express";
+import LogRocket from "logrocket";
 let requestWithSupertest: supertest.SuperTest<supertest.Test>;
 
 beforeAll(async ()=>{
