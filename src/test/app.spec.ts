@@ -11,7 +11,7 @@ declare global {
 }
 // @ts-ignore
 global.DO_NOT_START_SERVER = true;
-process.env["TEST_MDE"] = "true";
+process.env["TEST_MODE"] = "true";
 
 console.log = jest.fn();
 console.info = jest.fn();

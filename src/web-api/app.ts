@@ -132,7 +132,8 @@ export default async function main() {
     console.error("error catched on top-level: " + e.message + ", stacktrace:\n" + e.stacktrace);
 
     // @ts-ignore
-    if (process.env["TEST_MDE"] !== "true") {
+    if (process.env["TEST_MODE"] !== "true" &&
+      process.env["NODE_ENV"] !== "test") {
       process.exit(1);
     }
   }
