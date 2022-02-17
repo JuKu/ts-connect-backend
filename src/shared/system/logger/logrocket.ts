@@ -1,5 +1,4 @@
 import LogRocket from "logrocket";
-import {DO_NOT_START_SERVER} from "../../../test/app.spec";
 
 // do not use logrocket in tests
 // @ts-ignore
