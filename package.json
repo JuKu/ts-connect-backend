@@ -41,7 +41,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.1",
     "compression": "^1.7.4",
-    "express": "^4.17.2",
+    "express": "^4.17.3",
     "express-validator": "^6.14.0",
     "glob": "^7.2.0",
     "gzip": "^0.1.0",
