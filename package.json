@@ -56,11 +56,11 @@
     "ratelimiter": "^3.4.1",
     "read-ini-file": "^3.0.1",
     "redis": "^4.0.3",
-    "sanitize": "^2.1.0",
+    "sanitize": "^2.1.2",
     "setimmediate": "^1.0.5",
     "socket.io": "^4.4.1",
     "uuid": "^8.3.2",
-    "validator": ">=13.7.0",
+    "validator": ">=13.15.20",
     "winston": "^3.4.0"
   },
   "devDependencies": {
